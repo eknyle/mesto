@@ -1,0 +1,10 @@
+.element__like{
+    padding: 0;
+    margin: 0 ;
+    width: 22px;
+    height: 19px;
+    align-self:baseline;
+}
+.element__like:hover{
+    opacity: 0.5;
+}
