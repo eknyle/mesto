@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,14 +18,14 @@
             <main>
                 <section class="profile" aria-label="profile">
                     <div class="profile__info">
-                        <img src="./images/avatar.jpg" class="profile__avatar">
+                        <img src="./images/avatar.jpg" alt="Фотография профиля" class="profile__avatar">
                             <div class="profile__edit">
                                 <h1 class="profile__title">Жак-Ив Кусто</h1>
-                                <input class="profile__edit-button" type="button"  alt="Изменить" >
+                                <input class="profile__edit-button" type="button"  value="Изменить" >
                             </div>                        
                             <h2 class="profile__description">Исследователь океана</h2>  
                     </div>                           
-                    <input class="profile__add-button" type="button" alt="Добавить">
+                    <input class="profile__add-button" type="button" value="Добавить">
                 </section>
                 <section class="elements" aria-label="elements">
                     <article class="element">
@@ -61,13 +60,13 @@
                     </article>
                 </section>
                 <section class="popup"  aria-label="popup">
-                    <div class="popup__background"></div>                    
+                    <div class="popup__background"></div>
                     <form class="popup__container" aria-label="popup__container"> 
-                        <input type="button" class="popup__container__close" >                       
-                        <h2 class="popup__container__title">Редактировать профиль</h2>
-                        <input class="popup__container__name" type="text" alt="Введите имя" value="Жак-Ив Кусто">                   
-                        <input class="popup__container__description" type="text" alt="Введите род деятельности" value="Исследователь океана">
-                        <input type="submit" class="popup__container__save" title="Сохранить">
+                        <input type="button" class="popup__container-close" value="Закрыть" >                                              
+                        <h2 class="popup__container-title">Редактировать профиль</h2>
+                        <input class="popup__container-name" type="text"  value="Жак-Ив Кусто">                   
+                        <input class="popup__container-description" type="text" value="Исследователь океана">
+                        <input type="submit" class="popup__container-save" title="Сохранить">
                     </form>
                 </section>
             </main>

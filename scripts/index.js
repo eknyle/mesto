@@ -26,11 +26,11 @@ let jobField=document.querySelector(".profile__description");
 // Находим форму в DOM
 let formElement = document.querySelector(".popup__container");
 // Находим поля формы в DOM
-let nameInput = formElement.querySelector(".popup__container__name")
-let jobInput = formElement.querySelector(".popup__container__description")
+let nameInput = formElement.querySelector(".popup__container-name")
+let jobInput = formElement.querySelector(".popup__container-description")
 
 //назначаем обработчики для кнопки закрыть popup
-let closeButton=formElement.querySelector(".popup__container__close");
+let closeButton=formElement.querySelector(".popup__container-close");
 closeButton.addEventListener('click',popupOpenClose);
 
 // Прикрепляем обработчик к форме:

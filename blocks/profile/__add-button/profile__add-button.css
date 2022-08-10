@@ -13,6 +13,7 @@
     cursor: pointer;
     overflow: hidden;
     border: 0;
+    color: transparent;
 }
 .profile__add-button:hover{
     opacity: 0.6;

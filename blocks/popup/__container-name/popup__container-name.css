@@ -1,6 +1,6 @@
-.popup__container__description{
-    padding: 0 0 13px 0;
-    margin: 0 22px 45px 22px;
+.popup__container-name{
+    padding: 0 0 8px 0;
+    margin: 0 6.8% 30px 6.8%;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -13,7 +13,7 @@
     border-bottom:1px solid rgba(0, 0, 0, .2);
 }
 @media screen and (min-width:768px){
-    .popup__container__description{
-        margin:0 36px 48px 36px;
+    .popup__container-name{
+        margin:0 36px 30px 36px;
   }
 }
