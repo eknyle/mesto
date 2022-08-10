@@ -5,11 +5,11 @@
     font-style: normal;
     font-weight: 500;
     font-size: 27px;
-    line-height: 33px;    
+    line-height: 33px;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     position: relative;
     right:-18px;
     max-width: 336px;

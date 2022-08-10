@@ -11,8 +11,8 @@
     .profile__info{
        margin:0;
        display: grid;
-       grid-template-columns: 120px 1fr ;
-       grid-template-areas: 
+       grid-template-columns: 120px 1fr;
+       grid-template-areas:
        "img edit"
        "img description";
        column-gap: 30px;
