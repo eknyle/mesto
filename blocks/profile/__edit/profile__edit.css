@@ -1,4 +1,11 @@
 .profile__edit{
     display: flex;
     flex-direction: row;
+    max-width: 100%;
+    justify-content: center;
 }
+@media screen and (min-width:768px){
+    .profile__edit{
+        justify-content: left;
+    }
+  }

@@ -7,14 +7,17 @@
     font-size: 14px;
     line-height: 17px;
     text-align: center;
-    white-space: wrap;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 @media screen and (min-width:768px){
     .profile__description{
-        margin: 0 0 16px 0;
+        margin: 5px 0 0 0;
         font-size: 18px;
         line-height: 22px;
         text-align: left;
+        align-self:flex-start;
         grid-area: description;
     }
   }

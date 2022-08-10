@@ -28,4 +28,6 @@
 @import url(../blocks/popup__container/__name/popup__container__name.css);
 @import url(../blocks/popup__container/__save/popup__container__save.css);
 @import url(../blocks/popup__container/__close/popup__container__close.css);
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__title/footer__title.css);
 

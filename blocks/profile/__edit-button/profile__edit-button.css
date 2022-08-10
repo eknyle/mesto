@@ -11,6 +11,10 @@
     background-position: center;
     overflow: hidden;
     border: 0;
+    align-self: center;
+    position: relative;
+    right:-18px;
+    bottom: 2px;
 }
 .profile__edit-button:hover{
     opacity: 0.6;
@@ -21,7 +25,9 @@
         margin: 0 0 0 18px;
         width: 24px;
         height: 24px;
-        align-self:center;
+        align-self:end;
         grid-area: edit;
+        right:0;
+        bottom: 0;
     }
   }

@@ -2,7 +2,7 @@
   padding: 0;
   min-width: 320px;
   min-height: 100%;
-  max-width: 1280px;
+  max-width: 896px;
   margin:0 auto;
   display: flex;
   justify-items: center;
@@ -16,15 +16,4 @@
   font-family: 'Inter','Suisse Intl',Arial, Helvetica, sans-serif;
   background-color: #000000;
   color: #ffffff;
-}
-@media screen and (min-width:768px){
-  .page{
-    min-width:768px;
-    max-width: 70%; 
-  }
-}
-@media  screen and (min-width:1280px){
-  .page{
-    width: 896px;
-  }
 }
