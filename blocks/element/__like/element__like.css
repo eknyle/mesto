@@ -4,6 +4,15 @@
     width: 22px;
     height: 19px;
     align-self:baseline;
+    background-image: url(../../../images/like.svg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-color: transparent;
+    cursor: pointer;
+    background-position: center;
+    overflow: hidden;
+    border: 0;
+    color: transparent;    
 }
 .element__like:hover{
     opacity: 0.5;
