@@ -28,7 +28,7 @@ function popupOpen() {
         popup.classList.add('popup_opened');
     }
     //назначае поля редактирования
-    nameField.value = nameField.textContent;
+    nameInput.value = nameField.textContent;
     jobInput.value = jobField.textContent;
 }
 
@@ -38,7 +38,7 @@ function popupClose() {
         popup.classList.remove('popup_opened');
     }
     //возвращаем значения полей
-    nameField.value = nameField.textContent;
+    nameInput.value = nameField.textContent;
     jobInput.value = jobField.textContent;
 }
 function formSubmitHandler(evt) {
