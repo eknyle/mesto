@@ -1,11 +1,10 @@
-.element{
+.element {
     padding: 0;
     margin: 0;
     width: 282px;
-    height: 361px;
     background: #ffffff;
     border-radius: 10px;
-    display:flex;
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }

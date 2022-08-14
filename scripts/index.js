@@ -1,40 +1,51 @@
 
 //назначаем обработчики для кнопки открыть popup
-let editButton=document.querySelector(".profile__edit-button");
-editButton.addEventListener('click',popupOpenClose);
+let editButton = document.querySelector(".profile__edit-button");
+editButton.addEventListener('click', popupOpen);
 
 //находим поля имя и описание деятельности
-let nameField=document.querySelector(".profile__title");
-let jobField=document.querySelector(".profile__description");
+let nameField = document.querySelector(".profile__title");
+let jobField = document.querySelector(".profile__description");
 
 // Находим форму в DOM
-let formElement = document.querySelector(".form_popup");
+let formElement = document.querySelector("#profile-info");
 // Находим поля формы в DOM
-let nameInput = formElement.querySelector(".form__name_popup")
-let jobInput = formElement.querySelector(".form__description_popup")
+let nameInput = formElement.querySelector(".form__input_type_name")
+let jobInput = formElement.querySelector(".form__input_type_description")
 
 //назначаем обработчики для кнопки закрыть popup
-let closeButton=document.querySelector(".popup__container-close");
-closeButton.addEventListener('click',popupOpenClose);
+let closeButton = document.querySelector(".popup__container-close");
+closeButton.addEventListener('click', popupClose);
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler); 
+formElement.addEventListener('submit', formSubmitHandler);
 
-function popupOpenClose(){
-    //получаем попап и проверяем его классы
-    let popup=document.querySelector(".popup");
-    popup.classList.toggle('popup_opened');
-    //возвращаем поля редактирования в исходное состояние
-    nameField.value=nameField.textContent;
-    jobInput.value=jobField.textContent;
+let popup = document.querySelector(".popup");
+function popupOpen() {
+    // проверяем  классы
+    if (!popup.classList.contains('popup_opened')) {
+        popup.classList.add('popup_opened');
+    }
+    //назначае поля редактирования
+    nameField.value = nameField.textContent;
+    jobInput.value = jobField.textContent;
 }
-function formSubmitHandler (evt) {
-    evt.preventDefault(); 
-    let popup=document.querySelector(".popup");
-    popup.classList.toggle('popup_opened');
-    nameField.textContent=nameInput.value;
-    jobField.textContent=jobInput.value;
+
+function popupClose() {
+    //проверяем классы
+    if (popup.classList.contains('popup_opened')) {
+        popup.classList.remove('popup_opened');
+    }
+    //возвращаем значения полей
+    nameField.value = nameField.textContent;
+    jobInput.value = jobField.textContent;
+}
+function formSubmitHandler(evt) {
+    evt.preventDefault();
+    nameField.textContent = nameInput.value;
+    jobField.textContent = jobInput.value;
+    popupClose();
 }
 
 

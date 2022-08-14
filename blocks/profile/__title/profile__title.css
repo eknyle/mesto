@@ -1,6 +1,6 @@
-.profile__title{
+.profile__title {
     padding: 0;
-    margin: 0 0 14px 0;
+    margin: 0 0 14px 26px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
@@ -10,15 +10,18 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 336px;
+    max-width: 80%;
+    align-self: baseline;
+    align-content: center;
 }
-@media screen and (min-width:768px){
-    .profile__title{
+
+@media screen and (min-width:768px) {
+    .profile__title {
         margin: 0;
         font-size: 42px;
         line-height: 48px;
         text-align: left;
-        align-self: end;
-        grid-area: edit;       
+        grid-area: edit;
+        max-width: 30vw;
     }
-  }
+}
