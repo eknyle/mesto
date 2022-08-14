@@ -27,7 +27,6 @@
         background-size: 10px 10px;
         width: 24px;
         height: 24px;
-        align-self: center;
         grid-area: edit;
     }
 }

@@ -24,9 +24,7 @@ formElement.addEventListener('submit', formSubmitHandler);
 let popup = document.querySelector(".popup");
 function popupOpen() {
     // проверяем  классы
-    if (!popup.classList.contains('popup_opened')) {
-        popup.classList.add('popup_opened');
-    }
+    popup.classList.add('popup_opened');
     //назначае поля редактирования
     nameInput.value = nameField.textContent;
     jobInput.value = jobField.textContent;
@@ -34,9 +32,7 @@ function popupOpen() {
 
 function popupClose() {
     //проверяем классы
-    if (popup.classList.contains('popup_opened')) {
-        popup.classList.remove('popup_opened');
-    }
+    popup.classList.remove('popup_opened');
     //возвращаем значения полей
     nameInput.value = nameField.textContent;
     jobInput.value = jobField.textContent;

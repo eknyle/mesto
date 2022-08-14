@@ -10,7 +10,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 336px;
+    max-width: 70%;
     align-self: center;
 }
 
