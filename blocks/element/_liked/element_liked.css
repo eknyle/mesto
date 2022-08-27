@@ -1,0 +1,9 @@
+.element_liked {
+    opacity: 1;
+    background-image: url(../../../images/like-active.svg);
+    transition: opacity .3s ease;
+}
+
+.element_liked:hover {
+    opacity: 0.5;
+}

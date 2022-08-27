@@ -1,10 +1,13 @@
-.element__like {
+.element__delete {
     padding: 0;
     margin: 0;
-    width: 22px;
+    width: 18px;
     height: 19px;
-    align-self: baseline;
-    background-image: url(../../../images/like.svg);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    background-image: url(../../../images/trash.svg);
     background-repeat: no-repeat;
     background-size: cover;
     background-color: transparent;
@@ -16,10 +19,10 @@
     transition: opacity .1s ease;
 }
 
-.element__like:hover {
+.element__delete:hover {
     opacity: 0.5;
 }
 
-.element__like:active {
+.element__delete:active {
     opacity: 0.5;
 }
