@@ -11,6 +11,7 @@
     flex-direction: column;
     justify-content: left;
     align-items: flex-start;
+    position: relative;
 }
 
 @media screen and (min-width:768px) {

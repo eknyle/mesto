@@ -12,7 +12,7 @@
     border: 0;
     align-self: flex-end;
     justify-self: right;
-    position: relative;
+    position: absolute;
     cursor: pointer;
     top: -36px;
     right: 0;

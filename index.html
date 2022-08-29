@@ -38,11 +38,12 @@
                     </article>
                 </template>
             </section>
-            <section class="popup" aria-label="popup">
+            <section class="popup" id="popup" aria-label="popup">
                 <div class="popup__container">
-                    <button type="button" class="popup__container-close" value="Закрыть"></button>
+                    <button type="button" class="popup__container-close" id="popup__close"
+                        aria-label="Закрыть"></button>
                     <h2 class="popup__container-title">Редактировать профиль</h2>
-                    <form class="form" name="profile-info" id="profile-info" aria-label="form">
+                    <form class="form" name="profile-info" id="profile-info" aria-label="Форма редактирования профиля">
                         <input class="form__input form__input_type_name" type="text" required placeholder="Имя"
                             value="Жак-Ив Кусто">
                         <input class="form__input form__input_type_description" type="text" required
@@ -51,11 +52,26 @@
                     </form>
                 </div>
             </section>
-            <section class="popup-photo" aria-label="popup-photo">
-                <div class="popup-photo__container">
-                    <button type="button" class="popup-photo__close" value="Закрыть"></button>
-                    <img class="popup-photo__image" src="./images/fethi-unsplash.jpg" alt="Описание">
-                    <h2 class="popup-photo__title">Заголовок</h2>
+            <section class="popup" id="popup-photo" aria-label="popup-photo">
+                <div class="popup__container">
+                    <button type="button" class="popup__container-close" id="popup-photo__close"
+                        aria-label="Закрыть"></button>
+                    <h2 class="popup__container-title">Новое место</h2>
+                    <form class="form" name="photo-info" id="photo-info" aria-label="Форма добавления фото">
+                        <input class="form__input form__input_type_title" type="text" required placeholder="Название"
+                            value="">
+                        <input class="form__input form__input_type_link" type="text" required
+                            placeholder="Ссылка на картинку" value="">
+                        <button type="submit" class="form__save" title="Создать">Создать</button>
+                    </form>
+                </div>
+            </section>
+            <section class="popup popup_transparency_less" id="popup-view" aria-label="popup-view">
+                <div class="popup__image-container">
+                    <button class="popup__container-close" id="popup-view__close" aria-label="Закрыть"
+                        type="button"></button>
+                    <img class="popup__image" src="./images/fethi-unsplash.jpg" alt="Описание">
+                    <h2 class="popup__image-title">Заголовок фотографии</h2>
                 </div>
             </section>
         </main>
@@ -63,7 +79,7 @@
             <p class="footer__title">&copy;&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
         </footer>
     </div>
-    <script src="./scripts/index.js"></script>
+    <script defer src="./scripts/index.js"></script>
 </body>
 
 </html>
