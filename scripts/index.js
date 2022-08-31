@@ -26,19 +26,37 @@ const initialCards = [
     }
 ];
 
-
-
-const popupProfile = document.querySelector("#popup");
-const popupPhoto = document.querySelector("#popup-photo");
-const popupView = document.querySelector("#popup-view");
+const popupProfile = document.querySelector(".popup_type_profile");
+const popupPhoto = document.querySelector(".popup_type_photo");
+const popupView = document.querySelector(".popup_type_view");
 const popupPhotoImg = document.querySelector(".popup__image");
 const popupPhotoTitle = document.querySelector(".popup__image-title");
 const popupTitle = document.querySelector(".popup__container-title");
-const elementTemplate = document.querySelector('#element-template').content;
+const elementTemplate = document.querySelector('.element-template').content;
+//находим поля имя и описание деятельности
+const nameField = document.querySelector(".profile__title");
+const jobField = document.querySelector(".profile__description");
+
+// Находим форму профиля
+const profileForm = document.querySelector(".form_type_profile");
+// Находим поля формы редактирования профиля
+const profileNameInput = profileForm.querySelector(".form__input_type_name");
+const profileDescriptionInput = profileForm.querySelector(".form__input_type_description");
+const profileSaveButton = profileForm.querySelector(".form__save");
+profileForm.addEventListener('submit', saveProfileForm);
+
+// Находим поля формы добавления фото
+const photoAddForm = document.querySelector(".form_type_photo");
+const photoTitleInput = photoAddForm.querySelector(".form__input_type_title");
+const photoLinkInput = photoAddForm.querySelector(".form__input_type_link");
+const photoSaveButton = photoAddForm.querySelector(".form__save");
+photoAddForm.addEventListener('submit', savePhotoAddForm);
+
+
 
 //заркыть попап редактирования профиля
-const closeButton = document.querySelector("#popup__close");
-closeButton.addEventListener('click', (event) => closePopup(popupProfile, event));
+const closeProfileButton = document.querySelector("#popup__close");
+closeProfileButton.addEventListener('click', (event) => closePopup(popupProfile, event));
 //заркыть попап добавления фото
 const closePhotoButton = document.querySelector("#popup-photo__close");
 closePhotoButton.addEventListener('click', (event) => closePopup(popupPhoto, event));
@@ -48,65 +66,60 @@ popupViewButton.addEventListener('click', (event) => closePopup(popupView, event
 
 //открыть попап редактирования профиля
 const editButton = document.querySelector(".profile__edit-button");
-editButton.addEventListener('click', (event) => openPopup(popupProfile, event));
+editButton.addEventListener('click', (event) => prepareProfileForm(popupProfile, event));
 //открыть попап добавления фото
 const addButton = document.querySelector(".profile__add-button");
-addButton.addEventListener('click', (event) => openPopup(popupPhoto, event));
+addButton.addEventListener('click', (event) => prepareAddPhotoForm(popupPhoto, event));
 
 const elementsContainer = document.querySelector(".elements");
 initCards(initialCards);
 
-
-
-//находим поля имя и описание деятельности
-const nameField = document.querySelector(".profile__title");
-const jobField = document.querySelector(".profile__description");
-
-// Находим форму профиля
-const profileForm = document.querySelector("#profile-info");
-// Находим поля формы редактирования профиля
-const profileNameInput = profileForm.querySelector(".form__input_type_name");
-const profileDescriptionInput = profileForm.querySelector(".form__input_type_description");
-const profileSaveButton = profileForm.querySelector(".form__save");
-profileForm.addEventListener('submit', saveProfileForm);
-
-// Находим поля формы добавления фото
-const photoAddForm = document.querySelector("#photo-info");
-const photoTitleInput = photoAddForm.querySelector(".form__input_type_title");
-const photoLinkInput = photoAddForm.querySelector(".form__input_type_link");
-const photoSaveButton = photoAddForm.querySelector(".form__save");
-photoAddForm.addEventListener('submit', savePhotoAddForm);
-
-
-//открыть попап профиля и предзаполнить поля на форме
-function openPopup(popupWindow, evt) {
-    reFillFields(popupWindow.id, evt.target);
+//предзаполнить поля на форме и открыть попап
+function prepareProfileForm(popupWindow, evt) {
+    profileNameInput.value = nameField.textContent;
+    profileDescriptionInput.value = jobField.textContent;
     popupWindow.classList.add('popup_opened');
 }
+//предзаполнить поля на форме и открыть попап
+function prepareAddPhotoForm(popupWindow, evt) {
+    photoTitleInput.value = "";
+    photoLinkInput.value = "";
+    popupWindow.classList.add('popup_opened');
+}
+//открыть попап профиля и предзаполнить поля на форме
+function prepareViewPhotoForm(popupWindow, evt) {
+    popupPhotoImg.setAttribute('src', evt.target.getAttribute('src'));
+    popupPhotoImg.setAttribute('alt', evt.target.getAttribute('alt'));
+    popupPhotoTitle.textContent = evt.target.getAttribute('alt');
+    popupWindow.classList.add('popup_opened');
+}
+
 //закрыть попап
 function closePopup(popupWindow, evt) {
-    //проверяем классы
     popupWindow.classList.remove('popup_opened');
 }
 //добавлем карточку на страницу
 function addCard(element) {
     elementsContainer.prepend(element);
 }
-
-//собираем карточку
-function assambleCard(name, link) {
+//добавлем карточку на страницу
+function createCard(name, link) {
     const element = elementTemplate.querySelector('.element').cloneNode(true);
     const image = element.querySelector('.element__image');
     image.setAttribute('src', link);
     image.setAttribute('alt', name);
-    image.addEventListener('click', (event) => openPopup(popupView, event));
+    image.addEventListener('click', (event) => prepareViewPhotoForm(popupView, event));
 
     element.querySelector('.element__title').textContent = name;
     const likeButton = element.querySelector('.element__like');
     likeButton.addEventListener('click', likeCard);
     const deleteButton = element.querySelector('.element__delete');
     deleteButton.addEventListener('click', deleteCard);
-    addCard(element);
+    return element;
+}
+//собираем карточку
+function assambleCard(name, link) {
+    addCard(createCard(name, link));
 }
 //инициируем массив карточек при загрузке страницы
 function initCards(initialCards) {
@@ -122,27 +135,6 @@ function deleteCard(evt) {
 function likeCard(evt) {
     evt.target.classList.toggle('element_liked');
 }
-
-//подготовка попапа в зависимости от формы
-function reFillFields(id, target) {
-    switch (id) {
-        case 'popup':
-            profileNameInput.value = nameField.textContent;
-            profileDescriptionInput.value = jobField.textContent;
-            break;
-        case 'popup-photo':
-            photoTitleInput.value = "";
-            photoLinkInput.value = "";
-            break;
-        case 'popup-view':
-            popupPhotoImg.setAttribute('src', target.getAttribute('src'));
-            popupPhotoImg.setAttribute('alt', target.getAttribute('alt'));
-            popupPhotoTitle.textContent = target.getAttribute('alt');
-            break;
-    }
-}
-
-
 //сохранить данные формы в поля на странице
 function saveProfileForm(evt) {
     evt.preventDefault();
