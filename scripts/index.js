@@ -107,19 +107,9 @@ function triggerInputEvent(inputField) {
 //предзаполнить поля на форме и открыть попап
 function prepareProfileForm(popupWindow, evt) {
   profileNameInput.value = nameField.textContent;
-  hideInputError(
-    popupWindow,
-    profileNameInput,
-    validationObject.inputErrorClass,
-    validationObject.errorClass
-  );
   profileDescriptionInput.value = jobField.textContent;
-  hideInputError(
-    popupWindow,
-    profileDescriptionInput,
-    validationObject.inputErrorClass,
-    validationObject.errorClass
-  );
+  triggerInputEvent(profileNameInput);
+  triggerInputEvent(profileDescriptionInput);
   openPopup(popupWindow);
   addEscEventListener(popupWindow);
   addClickEventListener(popupWindow);
