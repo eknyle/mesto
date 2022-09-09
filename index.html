@@ -45,10 +45,12 @@
                     <h2 class="popup__container-title">Редактировать профиль</h2>
                     <form class="form form_type_profile" name="profile-info" id="profile-info"
                         aria-label="Форма редактирования профиля">
-                        <input class="form__input form__input_type_name" type="text" required placeholder="Имя"
+                        <input class="form__input form__input_type_name" id="name" type="text" required minlength="2" maxlength="40" placeholder="Имя"
                             value="Жак-Ив Кусто">
-                        <input class="form__input form__input_type_description" type="text" required
-                            placeholder="Вид деятельности" value="Исследователь океана">
+                        <span class="name-error form__input-error"></span>
+                        <input class="form__input form__input_type_description" type="text" required  minlength="2" maxlength="200"
+                            placeholder="Вид деятельности" id="description" value="Исследователь океана">
+                        <span class="description-error form__input-error"></span>
                         <button type="submit" class="form__save" title="Сохранить">Сохранить</button>
                     </form>
                 </div>
@@ -60,9 +62,11 @@
                     <h2 class="popup__container-title">Новое место</h2>
                     <form class="form form_type_photo" name="photo-info" id="photo-info"
                         aria-label="Форма добавления фото">
-                        <input class="form__input form__input_type_title" type="text" required placeholder="Название">
-                        <input class="form__input form__input_type_link" type="url" required
+                        <input class="form__input form__input_type_title" id="title" type="text" required  minlength="2" maxlength="30" placeholder="Название">
+                        <span class="title-error form__input-error"></span>
+                        <input class="form__input form__input_type_link" id="link" type="url" required
                             placeholder="Ссылка на картинку">
+                        <span class="link-error form__input-error"></span>
                         <button type="submit" class="form__save" title="Создать">Создать</button>
                     </form>
                 </div>
@@ -80,7 +84,8 @@
             <p class="footer__title">&copy;&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
         </footer>
     </div>
-    <script defer src="./scripts/index.js"></script>
+    <script defer src="./scripts/validate.js"></script>
+    <script defer src="./scripts/index.js"></script>    
 </body>
 
 </html>
