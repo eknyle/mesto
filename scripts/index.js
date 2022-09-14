@@ -80,25 +80,35 @@ const elementsContainer = document.querySelector(".elements");
 initCards(initialCards);
 
 //добавляем обработчик нажатия кнопки на оверлее
-function addClickEventListener(popupWindow) {
-  popupWindow.addEventListener("click", function (evt) {
-    if (evt.target === popupWindow) {
-      closePopup(popupWindow);
-    }
-  });
+function addClickEventListener() {
+  const openedPopupWindow = document.querySelector(".popup_opened");
+  openedPopupWindow.addEventListener("click", closeByClick);
+}
+function removeClickEventListener() {
+  const openedPopupWindow = document.querySelector(".popup_opened");
+  openedPopupWindow.removeEventListener("keydown", closeByClick);
 }
 
-function removeEscEventListener(popupWindow) {
-  document.removeEventListener("keydown", closePopup);
+function removeEscEventListener() {
+  document.removeEventListener("keydown", closeByEscape);
+}
+
+function closeByEscape(evt) {
+  if (evt.code === "Escape") {
+    const openedPopupWindow = document.querySelector(".popup_opened");
+    closePopup(openedPopupWindow);
+  }
+}
+function closeByClick(evt) {
+  const openedPopupWindow = document.querySelector(".popup_opened");
+  if (evt.type === "click" && evt.target === openedPopupWindow) {
+    closePopup(openedPopupWindow);
+  }
 }
 
 //добавляем обработчик нажатия кнопки esc
-function addEscEventListener(popupWindow) {
-  document.addEventListener("keydown", function (evt) {
-    if (evt.code === "Escape") {
-      closePopup(popupWindow);
-    }
-  });
+function addEscEventListener() {
+  document.addEventListener("keydown", closeByEscape);
 }
 //вызвать событие input в поле ввода данных
 function triggerInputEvent(inputField) {
@@ -111,12 +121,11 @@ function prepareProfileForm(popupWindow, evt) {
   triggerInputEvent(profileNameInput);
   triggerInputEvent(profileDescriptionInput);
   openPopup(popupWindow);
-  addEscEventListener(popupWindow);
-  addClickEventListener(popupWindow);
 }
 //предзаполнить поля на форме и открыть попап
 function prepareAddPhotoForm(popupWindow, evt) {
   photoTitleInput.value = "";
+  triggerInputEvent(photoTitleInput);
   hideInputError(
     popupWindow,
     photoTitleInput,
@@ -124,6 +133,7 @@ function prepareAddPhotoForm(popupWindow, evt) {
     validationObject.errorClass
   );
   photoLinkInput.value = "";
+  triggerInputEvent(photoLinkInput);
   hideInputError(
     popupWindow,
     photoLinkInput,
@@ -131,8 +141,6 @@ function prepareAddPhotoForm(popupWindow, evt) {
     validationObject.errorClass
   );
   openPopup(popupWindow);
-  addEscEventListener(popupWindow);
-  addClickEventListener(popupWindow);
 }
 //открыть попап просмотра фото
 function prepareViewPhotoForm(popupWindow, evt) {
@@ -140,16 +148,17 @@ function prepareViewPhotoForm(popupWindow, evt) {
   popupPhotoImg.setAttribute("alt", evt.target.getAttribute("alt"));
   popupPhotoTitle.textContent = evt.target.getAttribute("alt");
   openPopup(popupWindow);
-  addEscEventListener(popupWindow);
-  addClickEventListener(popupWindow);
 }
 //открыть попап
 function openPopup(popupWindow) {
   popupWindow.classList.add("popup_opened");
+  addEscEventListener();
+  addClickEventListener();
 }
 //закрыть попап
 function closePopup(popupWindow) {
-  removeEscEventListener(popupWindow);
+  removeEscEventListener();
+  removeClickEventListener();
   popupWindow.classList.remove("popup_opened");
 }
 //добавлем карточку на страницу
