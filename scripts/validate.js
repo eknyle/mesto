@@ -1,4 +1,4 @@
-const validationObject = {
+/* const validationObject = {
   formSelector: ".form",
   inputSelector: ".form__input",
   submitButtonSelector: ".form__save",
@@ -84,15 +84,7 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function toggleButtonState(inputList, buttonElement, inactiveButtonClass) {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(inactiveButtonClass);
-    buttonElement.setAttribute("disabled", true);
-  } else {
-    buttonElement.classList.remove(inactiveButtonClass);
-    buttonElement.removeAttribute("disabled");
-  }
-}
+
 
 function enableValidation(obj) {
   const formList = Array.from(document.querySelectorAll(obj.formSelector));
@@ -113,3 +105,4 @@ function enableValidation(obj) {
   });
 }
 enableValidation(validationObject);
+ */
