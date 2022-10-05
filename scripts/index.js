@@ -1,5 +1,5 @@
-import { ProfilePopup, PhotoAddPopup, PhotoViewPopup } from "./Popup.js";
 import * as fields from "./Data.js";
+import { ProfilePopup, PhotoAddPopup, PhotoViewPopup } from "./Popup.js";
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 

@@ -1,6 +1,6 @@
 import * as fields from "./Data.js";
 
-export class Popup {
+class Popup {
   constructor(selector) {
     this._selector = selector;
   }
