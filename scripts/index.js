@@ -3,8 +3,9 @@ import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 
 const profileValidator = new FormValidator(fields.validationProfile);
+profileValidator.enableValidation();
 const photoAddFormValidator = new FormValidator(fields.validationPhoto);
-
+photoAddFormValidator.enableValidation();
 //сохранить данные формы редактироивания профиля
 const saveProfileFormEvent = (evt) => {
   evt.preventDefault();
@@ -102,7 +103,7 @@ function addProfilePopupEventListeners() {
 function openProfilePopup() {
   fields.profileNameInput.value = fields.nameField.textContent;
   fields.profileDescriptionInput.value = fields.jobField.textContent;
-  profileValidator.enableValidation();
+
   profileValidator.hideInputError(fields.profileForm, fields.profileNameInput);
   profileValidator.hideInputError(
     fields.profileForm,
@@ -128,7 +129,6 @@ function openPhotoForm() {
   fields.photoTitleInput.value = "";
   fields.photoLinkInput.value = "";
 
-  photoAddFormValidator.enableValidation();
   photoAddFormValidator.hideInputError(
     fields.photoAddForm,
     fields.photoTitleInput
@@ -138,6 +138,10 @@ function openPhotoForm() {
     fields.photoLinkInput
   );
 
+  photoAddFormValidator.toggleButtonState(
+    [fields.photoTitleInput, fields.photoLinkInput],
+    fields.popupAddPhotoSaveButton
+  );
   openPopup(fields.popupPhoto);
 }
 
