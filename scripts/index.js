@@ -1,49 +1,38 @@
 import * as fields from "./Data.js";
-import { ProfilePopup, PhotoAddPopup, PhotoViewPopup } from "./Popup.js";
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 
-const generateCard = (...args) => new Card(...args);
-const openViewPopup = (...args) => new PhotoViewPopup(...args);
-const validator = (...args) => new FormValidator(...args);
+const profileValidator = new FormValidator(fields.validationProfile);
+const photoAddFormValidator = new FormValidator(fields.validationPhoto);
 
-//заполняем все данные для объекта попапа редактирования формы
-const profilePopupSelector = ".popup_type_profile";
-const profilePopupDataObject = {
-  NameInput: fields.profileNameInput,
-  DescriptionInput: fields.profileDescriptionInput,
-  NameField: fields.nameField,
-  DescriptionField: fields.jobField,
-  ProfileForm: fields.popupProfile,
-  SaveButton: fields.profileSaveButton,
-  CloseButton: fields.closeProfileButton,
-  Validator: validator,
+//сохранить данные формы редактироивания профиля
+const saveProfileFormEvent = (evt) => {
+  evt.preventDefault();
+  fields.nameField.textContent = fields.profileNameInput.value;
+  fields.jobField.textContent = fields.profileDescriptionInput.value;
 };
-fields.editButton.addEventListener("click", (event) => {
-  const profilePopupObj = new ProfilePopup(
-    profilePopupSelector,
-    profilePopupDataObject
+const savePhotoFormEvent = (evt) => {
+  evt.preventDefault();
+
+  const link = fields.photoLinkInput.value;
+  const title = fields.photoTitleInput.value;
+  const card = new Card(
+    {
+      name: title,
+      link: link,
+    },
+    openViewPopup,
+    fields.elementsContainer
   );
-  profilePopupObj.open();
+  card.createCard();
+};
+
+fields.popupProfileOpenButton.addEventListener("click", (event) => {
+  openProfilePopup();
 });
 
-const photoAddPopupSelector = ".popup_type_photo";
-const photoAddPopupDataObject = {
-  PhotoTitleInput: fields.photoTitleInput,
-  PhotoLinkInput: fields.photoLinkInput,
-  ClosePhotoButton: fields.closePhotoButton,
-  Form: fields.photoAddForm,
-  GenerateCard: generateCard,
-  Validator: validator,
-  OpenViewPopup: openViewPopup,
-};
-
-fields.addButton.addEventListener("click", (event) => {
-  const photoAddPopupObj = new PhotoAddPopup(
-    photoAddPopupSelector,
-    photoAddPopupDataObject
-  );
-  photoAddPopupObj.open();
+fields.popupAddPhotoAddButton.addEventListener("click", (event) => {
+  openPhotoForm();
 });
 
 initCards(fields.initialCards);
@@ -51,7 +40,120 @@ initCards(fields.initialCards);
 //инициируем массив карточек при загрузке страницы
 function initCards(initialCards) {
   for (let i = 0; i < initialCards.length; i++) {
-    const card = new Card(initialCards[i], openViewPopup);
-    card.generateCard();
+    const card = new Card(
+      initialCards[i],
+      openViewPopup,
+      fields.elementsContainer
+    );
+    card.createCard();
   }
 }
+
+//вместо Popup.js "чтобы потом не переписывать код заново" делаем кучу из всего что касается попапов
+
+function removePopupBaseEventListeners() {
+  const openedPopupWindow = document.querySelector(".popup_opened");
+  openedPopupWindow.removeEventListener("keydown", closeByClick);
+  document.removeEventListener("keydown", closeByEscape);
+}
+
+function closeByClick(evt) {
+  const openedPopupWindow = document.querySelector(".popup_opened");
+  if (evt.type === "click" && evt.target === openedPopupWindow) {
+    closePopup(openedPopupWindow);
+  }
+}
+function closeByEscape(evt) {
+  if (evt.code === "Escape") {
+    const openedPopupWindow = document.querySelector(".popup_opened");
+    closePopup(openedPopupWindow);
+  }
+}
+function addPopupBaseEventListeners() {
+  const openedPopupWindow = document.querySelector(".popup_opened");
+  document.addEventListener("keydown", closeByEscape);
+  openedPopupWindow.addEventListener("click", closeByClick);
+}
+
+//метод открывает попап
+function openPopup(popup) {
+  popup.classList.add("popup_opened");
+  addPopupBaseEventListeners();
+}
+//метод закрывает попап
+function closePopup(popup) {
+  removePopupBaseEventListeners();
+  popup.classList.remove("popup_opened");
+}
+
+//попап профиля
+function addProfilePopupEventListeners() {
+  fields.popupProfile.addEventListener("submit", (evt) => {
+    saveProfileFormEvent(evt);
+    closePopup(fields.popupProfile);
+  });
+
+  fields.popupProfileCloseButton.addEventListener("click", () => {
+    closePopup(fields.popupProfile);
+  });
+}
+
+//предзаполнить поля на форме и открыть попап редактирования формы
+function openProfilePopup() {
+  fields.profileNameInput.value = fields.nameField.textContent;
+  fields.profileDescriptionInput.value = fields.jobField.textContent;
+  profileValidator.enableValidation();
+  profileValidator.hideInputError(fields.profileForm, fields.profileNameInput);
+  profileValidator.hideInputError(
+    fields.profileForm,
+    fields.profileDescriptionInput
+  );
+
+  openPopup(fields.popupProfile);
+}
+
+//попап добавления фото
+function addPhotoFormEventListeners() {
+  fields.popupPhoto.addEventListener("submit", (evt) => {
+    savePhotoFormEvent(evt);
+    closePopup(fields.popupPhoto);
+  });
+
+  fields.popupAddPhotoCloseButton.addEventListener("click", () => {
+    closePopup(fields.popupPhoto);
+  });
+}
+
+function openPhotoForm() {
+  fields.photoTitleInput.value = "";
+  fields.photoLinkInput.value = "";
+
+  photoAddFormValidator.enableValidation();
+  photoAddFormValidator.hideInputError(
+    fields.photoAddForm,
+    fields.photoTitleInput
+  );
+  photoAddFormValidator.hideInputError(
+    fields.photoAddForm,
+    fields.photoLinkInput
+  );
+
+  openPopup(fields.popupPhoto);
+}
+
+//попап просмотра фото
+function addPhotoViewEventListeners() {
+  fields.popupViewCloseButton.addEventListener("click", () => {
+    closePopup(fields.popupView);
+  });
+}
+function openViewPopup(evt) {
+  fields.popupPhotoImg.setAttribute("src", evt.target.getAttribute("src"));
+  fields.popupPhotoImg.setAttribute("alt", evt.target.getAttribute("alt"));
+  fields.popupPhotoTitle.textContent = evt.target.getAttribute("alt");
+  addPhotoViewEventListeners();
+  openPopup(fields.popupView);
+}
+
+addPhotoFormEventListeners();
+addProfilePopupEventListeners();

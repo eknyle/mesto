@@ -56,46 +56,54 @@ export const photoTitleInput = photoAddForm.querySelector(
 export const photoLinkInput = photoAddForm.querySelector(
   ".form__input_type_link"
 );
-export const photoSaveButton = photoAddForm.querySelector(".form__save");
+export const popupAddPhotoSaveButton =
+  photoAddForm.querySelector(".form__save");
 //кнопка закрытия попап редактирования профиля
-export const closeProfileButton = document.querySelector("#popup__close");
+export const popupProfileCloseButton = document.querySelector("#popup__close");
 //кнопка закрытия попап добавления фото
-export const closePhotoButton = document.querySelector("#popup-photo__close");
+export const popupAddPhotoCloseButton = document.querySelector(
+  "#popup-photo__close"
+);
 //кнопка закрытия попапа просмотра фото
-export const popupViewButton = document.querySelector("#popup-view__close");
+export const popupViewCloseButton =
+  document.querySelector("#popup-view__close");
 //кнопка открыть попап редактирования профиля
-export const editButton = document.querySelector(".profile__edit-button");
+export const popupProfileOpenButton = document.querySelector(
+  ".profile__edit-button"
+);
 //кнопка открыть попап добавления фото
-export const addButton = document.querySelector(".profile__add-button");
+export const popupAddPhotoAddButton = document.querySelector(
+  ".profile__add-button"
+);
 //контейнер для карточек
 export const elementsContainer = document.querySelector(".elements");
 
 export const photoViewPopupObj = {
   Image: popupPhotoImg,
   PhotoTitle: popupPhotoTitle,
-  CloseButton: popupViewButton,
+  CloseButton: popupViewCloseButton,
 };
 
-export const validationObject = {
+/* export const validationObject = {
   formSelector: ".form",
   inputSelector: ".form__input",
   submitButtonSelector: ".form__save",
   inactiveButtonClass: "form__save_disabled",
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",
-};
+}; */
 export const validationProfile = {
-  formSelector: ".form_type_profile",
-  inputSelector: ".form__input",
-  submitButtonSelector: ".form__save",
+  form: profileForm,
+  inputList: [profileNameInput, profileDescriptionInput, profileSaveButton],
+  submitButton: profileSaveButton,
   inactiveButtonClass: "form__save_disabled",
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",
 };
 export const validationPhoto = {
-  formSelector: ".form_type_photo",
-  inputSelector: ".form__input",
-  submitButtonSelector: ".form__save",
+  form: photoAddForm,
+  inputList: [photoTitleInput, photoLinkInput],
+  submitButton: popupAddPhotoSaveButton,
   inactiveButtonClass: "form__save_disabled",
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",
