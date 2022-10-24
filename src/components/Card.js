@@ -1,11 +1,10 @@
 import * as fields from "./Data.js";
 
 export class Card {
-  constructor(data, openViewPopup, elementsContainer) {
+  constructor(data, openViewPopup) {
     this._name = data.name;
     this._link = data.link;
     this._openViewPopup = openViewPopup;
-    this._elementsContainer = elementsContainer;
   }
   _getTemplate() {
     const card = fields.elementTemplate
@@ -34,20 +33,13 @@ export class Card {
     evt.target.classList.toggle("element_liked");
   }
 
-  createCard() {
-    this._generateCard();
-    this._addCard();
-  }
-
-  _generateCard() {
+  generateCard() {
     this._element = this._getTemplate();
     this._image = this._element.querySelector(".element__image");
     this._image.setAttribute("src", this._link);
     this._image.setAttribute("alt", this._name);
     this._element.querySelector(".element__title").textContent = this._name;
     this._setEventListener();
-  }
-  _addCard() {
-    this._elementsContainer.prepend(this._element);
+    return this._element;
   }
 }

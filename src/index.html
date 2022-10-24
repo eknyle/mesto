@@ -21,7 +21,7 @@
         <main>
             <section class="profile" aria-label="profile">
                 <div class="profile__info">
-                    <img src="./images/avatar.jpg" alt="Фотография профиля" class="profile__avatar">
+                    <img src="<%=require('./images/avatar.jpg')%>" alt="Фотография профиля" class="profile__avatar">
                     <div class="profile__edit">
                         <h1 class="profile__title">Жак-Ив Кусто</h1>
                         <button class="profile__edit-button" type="button"></button>
@@ -34,7 +34,7 @@
                 <template class="element-template" id="element-template">
                     <article class="element">
                         <button class="element__delete" type="button"></button>
-                        <img src="./images/fethi-unsplash.jpg" class="element__image" alt="Заголовок">
+                        <img src="<%=require('./images/fethi-unsplash.jpg')%>" class="element__image" alt="Заголовок">
                         <h2 class="element__title">Карачаевск</h2>
                         <button class="element__like" type="button"></button>
                     </article>
@@ -77,7 +77,7 @@
                 <div class="popup__image-container">
                     <button class="popup__container-close" id="popup-view__close" aria-label="Закрыть"
                         type="button"></button>
-                    <img class="popup__image" src="./images/fethi-unsplash.jpg" alt="Описание">
+                    <img class="popup__image" src="<%=require('./images/fethi-unsplash.jpg')%>" alt="Описание">
                     <h2 class="popup__image-title">Заголовок фотографии</h2>
                 </div>
             </section>
@@ -88,7 +88,7 @@
     </div>
    
 
-    <script type="module" defer src="./scripts/index.js"></script>
+    <script type="module" defer src="./pages/index.js"></script>
 
 </body>
 
