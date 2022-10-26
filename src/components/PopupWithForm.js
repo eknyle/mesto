@@ -8,47 +8,41 @@ export default class PopupWithForm extends Popup {
     formFields,
     getFieldsInfoFunction,
     closeButton,
-    validateObj
+    validateObj,
+    saveButton
   ) {
-    super(popup);
+    super(popup, closeButton);
 
     this._element = form;
     this._submitEventHandler = submitEventHandler;
     this._fields = formFields;
     this._getFieldsInfoFunction = getFieldsInfoFunction;
-    this._closeButton = closeButton;
     this._validateObj = validateObj;
+    this._saveButton = saveButton;
   }
   _getInputValues() {
     //собирает данные всех полей формы
-    const valuesArr = [];
+    const fieldsValues = new Map();
     this._fields.forEach((element) => {
-      valuesArr.push({ key: element.name, value: element.value });
+      fieldsValues.set(element.id, element.value);
     });
-    return valuesArr;
+    return fieldsValues;
+  }
+  _setInputValues(data) {
+    this._fields.forEach((element) => {
+      element.value = data ? data.get(element.id) : "";
+      this._validateObj.hideInputError(this._element, element);
+    });
   }
   setEventListeners() {
-    super.setEventListeners();
     //обавлять обработчик сабмита формы
-    this._element.addEventListener(
-      "submit",
-      (evt) => {
-        evt.preventDefault();
-        /*  console.log(evt); */
-        this._submitEventHandler(evt);
-        super.close();
-      },
-      {
-        once: true,
-      }
-    );
-    this._closeButton.addEventListener(
-      "click",
-      () => {
-        this.close();
-      },
-      { once: true }
-    );
+    this._element.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+      const fields = this._getInputValues();
+
+      this._submitEventHandler(evt, fields);
+      this.close();
+    });
   }
   close() {
     // при закрытии попапа форма должна ещё и сбрасываться
@@ -58,15 +52,13 @@ export default class PopupWithForm extends Popup {
   }
   open() {
     //проходим по массиву элементов, сбрасываем все данные полей
-    const fieldsPreValues = this._getFieldsInfoFunction
+
+    const data = this._getFieldsInfoFunction
       ? this._getFieldsInfoFunction()
       : null;
 
-    this._fields.forEach((element) => {
-      element.value = fieldsPreValues ? fieldsPreValues.get(element.id) : "";
-      this._validateObj.hideInputError(this._element, element);
-    });
-    this._validateObj.enableValidation();
+    this._setInputValues(data);
+    this._validateObj.toggleButtonState(this._fields, this._saveButton);
     super.open();
   }
 }

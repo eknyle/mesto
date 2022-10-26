@@ -1,13 +1,17 @@
 export default class Popup {
-  constructor(popup) {
+  constructor(popup, closeButton) {
     this._popup = popup; // попап
+    this._closeButton = closeButton;
+    this._handleEscClose = this._handleEscClose.bind(this);
+    this._handleClickClose = this._handleClickClose.bind(this);
+    this._handleCloseButton = this._handleCloseButton.bind(this);
   }
 
   open() {
     //открытие попапа
-    this._popup.classList.add("popup_opened");
 
-    /*  this.setEventListeners(); */
+    this._popup.classList.add("popup_opened");
+    this._setEventListeners();
   }
   close() {
     //закрытие попапа
@@ -26,17 +30,18 @@ export default class Popup {
       this.close();
     }
   }
-  setEventListeners() {
+  _handleCloseButton() {
+    this.close();
+  }
+
+  _setEventListeners() {
     //добавляет слушатель клика иконке закрытия попапа. Модальное окно также закрывается при клике на затемнённую
     //область вокруг формы
 
-    document.addEventListener("keydown", (evt) => {
-      this._handleEscClose(evt);
-    });
-    const openedPopupWindow = document.querySelector(".popup_opened");
-    openedPopupWindow.addEventListener("click", (evt) => {
-      this._handleClickClose(evt);
-    });
+    this._closeButton.addEventListener("click", this._handleCloseButton);
+    document.addEventListener("keydown", this._handleEscClose);
+
+    this._popup.addEventListener("click", this._handleClickClose);
   }
   _removeEventListeners() {
     const openedPopupWindow = document.querySelector(".popup_opened");
@@ -44,5 +49,7 @@ export default class Popup {
       openedPopupWindow.removeEventListener("keydown", this._handleClickClose);
     }
     document.removeEventListener("keydown", this._handleEscClose);
+
+    this._closeButton.removeEventListener("click", this._handleCloseButton);
   }
 }

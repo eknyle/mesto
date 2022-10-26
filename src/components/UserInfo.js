@@ -22,10 +22,14 @@ export default class UserInfo {
       ],
     ]);
   }
-  setUserInfo() {
+  setUserInfo(data) {
     //принимает новые данные пользователя и добавляет их на страницу.
-    this._userNameField.textContent = this._userNameInputField.value;
+    this._userNameField.textContent = data.get(this._userNameInputField.id);
+    this._userDescriptionField.textContent = data.get(
+      this._userDescriptionInputField.id
+    );
+    /*    this._userNameField.textContent = this._userNameInputField.value;
     this._userDescriptionField.textContent =
-      this._userDescriptionInputField.value;
+      this._userDescriptionInputField.value; */
   }
 }

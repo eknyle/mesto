@@ -1,13 +1,12 @@
-import * as fields from "./Data.js";
-
 export class Card {
-  constructor(data, openViewPopup) {
+  constructor(data, openViewPopup, elementTemplate) {
     this._name = data.name;
     this._link = data.link;
+    this._elementTemplate = elementTemplate;
     this._openViewPopup = openViewPopup;
   }
   _getTemplate() {
-    const card = fields.elementTemplate
+    const card = this._elementTemplate
       .querySelector(".element")
       .cloneNode(true);
     return card;

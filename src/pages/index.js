@@ -3,15 +3,10 @@ import { Card } from "../components/Card.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PicturePopup.js";
 import UserInfo from "../components/UserInfo.js";
-import FormFields from "../components/FormFields.js";
+
 import { FormValidator } from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import "./index.css";
-
-const photoFormFields = new FormFields([
-  fields.photoTitleInput,
-  fields.photoLinkInput,
-]);
 
 const userInfo = new UserInfo(
   fields.profileNameInput,
@@ -25,9 +20,9 @@ const photoAddFormValidator = new FormValidator(fields.validationPhoto);
 /* photoAddFormValidator.enableValidation();
  */
 //сохранить данные формы редактироивания профиля
-const saveProfileFormEvent = (evt) => {
+const saveProfileFormEvent = (evt, fieldsValues) => {
   evt.preventDefault();
-  userInfo.setUserInfo();
+  userInfo.setUserInfo(fieldsValues);
 };
 
 const userFormPopup = new PopupWithForm(
@@ -37,43 +32,39 @@ const userFormPopup = new PopupWithForm(
   [fields.profileNameInput, fields.profileDescriptionInput],
   userInfo.getUserInfo.bind(userInfo),
   fields.popupProfileCloseButton,
-  profileValidator
+  profileValidator,
+  fields.profileSaveButton
 );
+userFormPopup.setEventListeners();
+profileValidator.enableValidation();
+
+const popupWithImage = new PopupWithImage(
+  fields.popupView,
+  fields.popupViewCloseButton
+);
+popupWithImage.addEventListeners();
 
 function openViewPopup(evt) {
-  const popupWithImage = new PopupWithImage(
-    fields.popupView,
-    evt.target,
-    fields.popupPhotoImg,
-    fields.popupPhotoTitle,
-    fields.popupViewCloseButton
+  popupWithImage.open(evt.target, fields.popupPhotoImg, fields.popupPhotoTitle);
+}
+
+function createCard(fieldsValues) {
+  const card = new Card(
+    {
+      name: fieldsValues.get(fields.photoTitleInput.id),
+      link: fieldsValues.get(fields.photoLinkInput.id),
+    },
+    openViewPopup,
+    fields.elementTemplate
   );
-  popupWithImage.open();
+  return card.generateCard();
 }
 
 //сохранить данные формы добавления фото
-const savePhotoFormEvent = (evt) => {
+const savePhotoFormEvent = (evt, fieldsValues) => {
   evt.preventDefault();
-  //получить данные полей формы
-  const fieldsValues = photoFormFields.getInputFieldsValues();
 
-  const section = new Section(
-    {
-      items: [
-        {
-          name: fieldsValues.get(fields.photoTitleInput.id),
-          link: fieldsValues.get(fields.photoLinkInput.id),
-        },
-      ],
-      renderer: (card) => {
-        const cardEl = new Card(card, openViewPopup);
-        return cardEl.generateCard();
-      },
-    },
-    fields.elementsContainer
-  );
-
-  section.generateItems();
+  fields.elementsContainer.prepend(createCard(fieldsValues));
 };
 
 const photoFormPopup = new PopupWithForm(
@@ -83,17 +74,18 @@ const photoFormPopup = new PopupWithForm(
   [fields.photoTitleInput, fields.photoLinkInput],
   null,
   fields.popupAddPhotoCloseButton,
-  photoAddFormValidator
+  photoAddFormValidator,
+  fields.popupAddPhotoSaveButton
 );
+photoFormPopup.setEventListeners();
+photoAddFormValidator.enableValidation();
 
 fields.popupProfileOpenButton.addEventListener("click", (event) => {
   userFormPopup.open();
-  userFormPopup.setEventListeners();
 });
 
 fields.popupAddPhotoAddButton.addEventListener("click", (event) => {
   photoFormPopup.open();
-  photoFormPopup.setEventListeners();
 });
 
 initCards(fields.initialCards);
@@ -104,7 +96,7 @@ function initCards(initialCards) {
     {
       items: initialCards,
       renderer: (card) => {
-        const cardEl = new Card(card, openViewPopup);
+        const cardEl = new Card(card, openViewPopup, fields.elementTemplate);
         return cardEl.generateCard();
       },
     },
