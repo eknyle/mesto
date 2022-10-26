@@ -14,11 +14,22 @@ const userInfo = new UserInfo(
   fields.nameField,
   fields.jobField
 );
+
+const section = new Section(
+  {
+    items: fields.initialCards,
+    renderer: (card) => {
+      return createCard(card);
+    },
+  },
+  fields.elementsContainer
+);
+section.generateItems();
+
 const profileValidator = new FormValidator(fields.validationProfile);
-/* profileValidator.enableValidation(); */
+
 const photoAddFormValidator = new FormValidator(fields.validationPhoto);
-/* photoAddFormValidator.enableValidation();
- */
+
 //сохранить данные формы редактироивания профиля
 const saveProfileFormEvent = (evt, fieldsValues) => {
   evt.preventDefault();
@@ -48,23 +59,19 @@ function openViewPopup(evt) {
   popupWithImage.open(evt.target, fields.popupPhotoImg, fields.popupPhotoTitle);
 }
 
-function createCard(fieldsValues) {
-  const card = new Card(
-    {
-      name: fieldsValues.get(fields.photoTitleInput.id),
-      link: fieldsValues.get(fields.photoLinkInput.id),
-    },
-    openViewPopup,
-    fields.elementTemplate
-  );
+function createCard(item) {
+  const card = new Card(item, openViewPopup, fields.elementTemplate);
   return card.generateCard();
 }
 
 //сохранить данные формы добавления фото
 const savePhotoFormEvent = (evt, fieldsValues) => {
   evt.preventDefault();
-
-  fields.elementsContainer.prepend(createCard(fieldsValues));
+  const item = {
+    name: fieldsValues.get(fields.photoTitleInput.id),
+    link: fieldsValues.get(fields.photoLinkInput.id),
+  };
+  section.addItem(createCard(item));
 };
 
 const photoFormPopup = new PopupWithForm(
@@ -87,20 +94,3 @@ fields.popupProfileOpenButton.addEventListener("click", (event) => {
 fields.popupAddPhotoAddButton.addEventListener("click", (event) => {
   photoFormPopup.open();
 });
-
-initCards(fields.initialCards);
-
-//инициируем массив карточек при загрузке страницы
-function initCards(initialCards) {
-  const section = new Section(
-    {
-      items: initialCards,
-      renderer: (card) => {
-        const cardEl = new Card(card, openViewPopup, fields.elementTemplate);
-        return cardEl.generateCard();
-      },
-    },
-    fields.elementsContainer
-  );
-  section.generateItems();
-}
