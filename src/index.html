@@ -34,7 +34,7 @@
                 <template class="element-template" id="element-template">
                     <article class="element">
                         <button class="element__delete" type="button"></button>
-                        <img src="<%=require('./images/fethi-unsplash.jpg')%>" class="element__image" alt="Заголовок">
+                        <img src="<%=require('./images/fethi-unsplash.jpg')%>" onerror="this.src=`<%=require('./images/fethi-unsplash.jpg')%>`" class="element__image" alt="Заголовок">
                         <h2 class="element__title">Карачаевск</h2>
                         <button class="element__like" type="button"></button>
                     </article>

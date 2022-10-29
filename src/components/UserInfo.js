@@ -3,12 +3,14 @@ export default class UserInfo {
     userNameInputField,
     userDescriptionInputField,
     userNameField,
-    userDescriptionField
+    userDescriptionField,
+    userAvatar
   ) {
     this._userNameInputField = userNameInputField;
     this._userDescriptionInputField = userDescriptionInputField;
     this._userNameField = userNameField;
     this._userDescriptionField = userDescriptionField;
+    this._userAvatar = userAvatar;
   }
   getUserInfo() {
     //возвращает объект с данными пользователя.
@@ -28,8 +30,10 @@ export default class UserInfo {
     this._userDescriptionField.textContent = data.get(
       this._userDescriptionInputField.id
     );
-    /*    this._userNameField.textContent = this._userNameInputField.value;
-    this._userDescriptionField.textContent =
-      this._userDescriptionInputField.value; */
+  }
+  setUserInfoFromServer(data) {
+    this._userNameField.textContent = data.name;
+    this._userDescriptionField.textContent = data.about;
+    this._userAvatar.setAttribute("src", data.avatar);
   }
 }

@@ -1,4 +1,4 @@
-export const initialCards = [
+/* export const initialCards = [
   {
     name: "Архыз",
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
@@ -23,11 +23,12 @@ export const initialCards = [
     name: "Байкал",
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
   },
-];
+]; */
 
 export const photoViewPopupSelector = ".popup_type_view";
 
 //находим поля имя и описание деятельности
+export const avatarField = document.querySelector(".profile__avatar");
 export const nameField = document.querySelector(".profile__title");
 export const jobField = document.querySelector(".profile__description");
 export const popupProfile = document.querySelector(".popup_type_profile");
@@ -84,14 +85,6 @@ export const photoViewPopupObj = {
   CloseButton: popupViewCloseButton,
 };
 
-/* export const validationObject = {
-  formSelector: ".form",
-  inputSelector: ".form__input",
-  submitButtonSelector: ".form__save",
-  inactiveButtonClass: "form__save_disabled",
-  inputErrorClass: "form__input_type_error",
-  errorClass: "form__input-error_active",
-}; */
 export const validationProfile = {
   form: profileForm,
   inputList: [profileNameInput, profileDescriptionInput, profileSaveButton],

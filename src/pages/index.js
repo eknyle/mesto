@@ -6,25 +6,52 @@ import UserInfo from "../components/UserInfo.js";
 
 import { FormValidator } from "../components/FormValidator.js";
 import Section from "../components/Section.js";
+import Api from "../components/Api.js";
 import "./index.css";
 
 const userInfo = new UserInfo(
   fields.profileNameInput,
   fields.profileDescriptionInput,
   fields.nameField,
-  fields.jobField
+  fields.jobField,
+  fields.avatarField
 );
+let currentUserId = "";
+function setUserId(data) {
+  currentUserId = data;
+}
 
-const section = new Section(
-  {
-    items: fields.initialCards,
-    renderer: (card) => {
-      return createCard(card);
+function setInitialCards(array) {
+  const section = new Section(
+    {
+      items: array,
+      renderer: (card) => {
+        const deleteHidden = currentUserId === card.owner._id ? false : true;
+        return createCard(card, deleteHidden);
+      },
     },
-  },
-  fields.elementsContainer
-);
-section.generateItems();
+    fields.elementsContainer
+  );
+  section.generateItems();
+}
+const api = new Api();
+api
+  .getUserInfo()
+  .then((result) => {
+    setUserId(result._id);
+    userInfo.setUserInfoFromServer(result);
+  })
+  .catch((err) => {
+    console.log(err); // выведем ошибку в консоль
+  });
+api
+  .getInitialCards()
+  .then((result) => {
+    setInitialCards(result);
+  })
+  .catch((err) => {
+    console.log(err); // выведем ошибку в консоль
+  });
 
 const profileValidator = new FormValidator(fields.validationProfile);
 
@@ -33,7 +60,17 @@ const photoAddFormValidator = new FormValidator(fields.validationPhoto);
 //сохранить данные формы редактироивания профиля
 const saveProfileFormEvent = (evt, fieldsValues) => {
   evt.preventDefault();
-  userInfo.setUserInfo(fieldsValues);
+  api
+    .updateUserInfo(
+      fieldsValues.get(fields.profileNameInput.id),
+      fieldsValues.get(fields.profileDescriptionInput.id)
+    )
+    .then((data) => {
+      userInfo.setUserInfo(fieldsValues);
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
 };
 
 const userFormPopup = new PopupWithForm(
@@ -59,11 +96,19 @@ function openViewPopup(evt) {
   popupWithImage.open(evt.target, fields.popupPhotoImg, fields.popupPhotoTitle);
 }
 
-function createCard(item) {
-  const card = new Card(item, openViewPopup, fields.elementTemplate);
+function createCard(item, deleteHidden) {
+  const card = new Card(
+    item,
+    openViewPopup,
+    fields.elementTemplate,
+    deleteHidden
+  );
   return card.generateCard();
 }
-
+const newItemSection = new Section(
+  { items: null, renderer: null },
+  fields.elementsContainer
+);
 //сохранить данные формы добавления фото
 const savePhotoFormEvent = (evt, fieldsValues) => {
   evt.preventDefault();
@@ -71,7 +116,14 @@ const savePhotoFormEvent = (evt, fieldsValues) => {
     name: fieldsValues.get(fields.photoTitleInput.id),
     link: fieldsValues.get(fields.photoLinkInput.id),
   };
-  section.addItem(createCard(item));
+  api
+    .addNewCard(item.name, item.link)
+    .then((data) => {
+      newItemSection.addItem(createCard(item, false));
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
 };
 
 const photoFormPopup = new PopupWithForm(

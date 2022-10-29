@@ -1,9 +1,10 @@
 export class Card {
-  constructor(data, openViewPopup, elementTemplate) {
+  constructor(data, openViewPopup, elementTemplate, deleteHidden) {
     this._name = data.name;
     this._link = data.link;
     this._elementTemplate = elementTemplate;
     this._openViewPopup = openViewPopup;
+    this._deleteHidden = deleteHidden;
   }
   _getTemplate() {
     const card = this._elementTemplate
@@ -19,9 +20,11 @@ export class Card {
     this._element
       .querySelector(".element__like")
       .addEventListener("click", this._likeCard.bind(this));
-    this._element
-      .querySelector(".element__delete")
-      .addEventListener("click", this._deleteCard.bind(this));
+    if (!this._deleteHidden) {
+      this._element
+        .querySelector(".element__delete")
+        .addEventListener("click", this._deleteCard.bind(this));
+    }
   }
 
   _deleteCard(evt) {
@@ -37,6 +40,11 @@ export class Card {
     this._image = this._element.querySelector(".element__image");
     this._image.setAttribute("src", this._link);
     this._image.setAttribute("alt", this._name);
+    if (this._deleteHidden) {
+      this._element
+        .querySelector(".element__delete")
+        .classList.add("element__delete_hidden");
+    }
     this._element.querySelector(".element__title").textContent = this._name;
     this._setEventListener();
     return this._element;
