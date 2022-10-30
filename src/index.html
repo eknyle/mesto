@@ -23,10 +23,10 @@
                 <div class="profile__info">
                     <img src="<%=require('./images/avatar.jpg')%>" alt="Фотография профиля" class="profile__avatar">
                     <div class="profile__edit">
-                        <h1 class="profile__title">Жак-Ив Кусто</h1>
+                        <h1 class="profile__title"></h1>
                         <button class="profile__edit-button" type="button"></button>
                     </div>
-                    <p class="profile__description">Исследователь океана</p>
+                    <p class="profile__description"></p>
                 </div>
                 <button class="profile__add-button" type="button"></button>
             </section>
@@ -35,8 +35,11 @@
                     <article class="element">
                         <button class="element__delete" type="button"></button>
                         <img src="<%=require('./images/fethi-unsplash.jpg')%>" onerror="this.src=`<%=require('./images/fethi-unsplash.jpg')%>`" class="element__image" alt="Заголовок">
-                        <h2 class="element__title">Карачаевск</h2>
-                        <button class="element__like" type="button"></button>
+                        <h2 class="element__title"></h2>
+                        <div class="element__like-block">
+                            <button class="element__like" type="button"></button>
+                            <span class="element__like-number"></span>                            
+                        </div>                        
                     </article>
                 </template>
             </section>

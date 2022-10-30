@@ -20,14 +20,20 @@ let currentUserId = "";
 function setUserId(data) {
   currentUserId = data;
 }
-
+function isMyCardFunction(ownerId) {
+  return currentUserId === ownerId ? true : false;
+}
 function setInitialCards(array) {
   const section = new Section(
     {
       items: array,
       renderer: (card) => {
-        const deleteHidden = currentUserId === card.owner._id ? false : true;
-        return createCard(card, deleteHidden);
+        const isLiked =
+          card.likes.findIndex((el) => el._id === currentUserId) >= 0
+            ? true
+            : false;
+
+        return createCard(card, isMyCardFunction(card.owner._id), isLiked);
       },
     },
     fields.elementsContainer
@@ -72,6 +78,45 @@ const saveProfileFormEvent = (evt, fieldsValues) => {
       console.log(err); // выведем ошибку в консоль
     });
 };
+function updateLikeCount(data, element) {
+  element.textContent = data.likes.length;
+}
+const likeCardEvent = (evt, cardId) => {
+  evt.preventDefault();
+
+  api
+    .likeCard(cardId)
+    .then((data) => {
+      //обновить карточку после лайка
+
+      evt.target.classList.toggle("element_liked");
+      const element = evt.target.parentNode.querySelector(
+        ".element__like-number"
+      );
+      updateLikeCount(data, element);
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
+};
+const dislikeCardEvent = (evt, cardId) => {
+  evt.preventDefault();
+
+  api
+    .dislikeCard(cardId)
+    .then((data) => {
+      //обновить карточку после лайка
+
+      const element = evt.target.parentNode.querySelector(
+        ".element__like-number"
+      );
+      updateLikeCount(data, element);
+      evt.target.classList.toggle("element_liked");
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
+};
 
 const userFormPopup = new PopupWithForm(
   fields.popupProfile,
@@ -96,12 +141,15 @@ function openViewPopup(evt) {
   popupWithImage.open(evt.target, fields.popupPhotoImg, fields.popupPhotoTitle);
 }
 
-function createCard(item, deleteHidden) {
+function createCard(item, isMyCard, isLiked) {
   const card = new Card(
     item,
     openViewPopup,
     fields.elementTemplate,
-    deleteHidden
+    isMyCardFunction(item.owner._id),
+    likeCardEvent,
+    dislikeCardEvent,
+    isLiked
   );
   return card.generateCard();
 }
@@ -119,7 +167,7 @@ const savePhotoFormEvent = (evt, fieldsValues) => {
   api
     .addNewCard(item.name, item.link)
     .then((data) => {
-      newItemSection.addItem(createCard(item, false));
+      newItemSection.addItem(createCard(data, true, false));
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль

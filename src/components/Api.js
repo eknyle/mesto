@@ -59,6 +59,42 @@ export default class Api {
       return Promise.reject(`Ошибка: ${res.status}`);
     }); */
   }
+  likeCard(cardId) {
+    return fetch(
+      `https://mesto.nomoreparties.co/v1/cohort-52/cards/${cardId}/likes`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: this.authorization,
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // если ошибка, отклоняем промис
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
+  dislikeCard(cardId) {
+    return fetch(
+      `https://mesto.nomoreparties.co/v1/cohort-52/cards/${cardId}/likes`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: this.authorization,
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // если ошибка, отклоняем промис
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
 
   getUserInfo() {
     return fetch(this.userUrl, {
