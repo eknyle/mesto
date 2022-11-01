@@ -26,6 +26,22 @@
 ]; */
 
 export const photoViewPopupSelector = ".popup_type_view";
+export const popupConfirm = document.querySelector(".popup_type_delete-card");
+export const popupConfirmCloseButton = document.querySelector(".popup__close");
+export const popupConfirmSaveButton = document.querySelector(".popup__save");
+
+export const popupAvatar = document.querySelector(".popup_type_avatar");
+export const avatarForm = document.querySelector(".form_type_avatar"); //
+export const avatarLinkInput = avatarForm.querySelector(
+  ".form__input_type_link"
+);
+export const popupAvatarCloseButton = document.querySelector(
+  ".popup__avatar-close"
+);
+export const avatarSaveButton = avatarForm.querySelector(".form__save");
+export const popupAvatarContainer = document.querySelector(
+  ".profile__avatar-container"
+);
 
 //находим поля имя и описание деятельности
 export const avatarField = document.querySelector(".profile__avatar");
@@ -97,6 +113,14 @@ export const validationPhoto = {
   form: photoAddForm,
   inputList: [photoTitleInput, photoLinkInput],
   submitButton: popupAddPhotoSaveButton,
+  inactiveButtonClass: "form__save_disabled",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_active",
+};
+export const validationAvatar = {
+  form: avatarForm,
+  inputList: [avatarLinkInput],
+  submitButton: avatarSaveButton,
   inactiveButtonClass: "form__save_disabled",
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",

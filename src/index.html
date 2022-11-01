@@ -21,7 +21,11 @@
         <main>
             <section class="profile" aria-label="profile">
                 <div class="profile__info">
-                    <img src="<%=require('./images/avatar.jpg')%>" alt="Фотография профиля" class="profile__avatar">
+                    <div class="profile__avatar-container">
+                       
+                        <img src="<%=require('./images/avatar.jpg')%>"  alt="Фотография профиля" class="profile__avatar">
+                    </div>
+                    
                     <div class="profile__edit">
                         <h1 class="profile__title"></h1>
                         <button class="profile__edit-button" type="button"></button>
@@ -82,6 +86,29 @@
                         type="button"></button>
                     <img class="popup__image" src="<%=require('./images/fethi-unsplash.jpg')%>" alt="Описание">
                     <h2 class="popup__image-title">Заголовок фотографии</h2>
+                </div>
+            </section>
+            <section class="popup popup_type_delete-card" id="popup-delete" aria-label="popup-delete">
+                <div class="popup__container-delete">
+                    <button class="popup__close" id="popup-delete__close" aria-label="Закрыть"
+                    type="button"></button>
+                    <p class="popup__question">Вы уверены?</p>
+                    <button class="popup__save" aria-label="Да" type="button">Да</button>
+                </div>
+            </section>
+            <section class="popup popup_type_avatar" id="popup-avatar" aria-label="popup-avatar">
+                <div class="popup__avatar-container">
+                    <button class="popup__avatar-close" aria-label="Закрыть"
+                    type="button"></button>
+                    <h2 class="popup__avatar-title">Обновить аватар</h2>
+                    <form class="form form_type_avatar" name="avatar-info" id="avatar-info"
+                        aria-label="Обновить аватар">
+                        <input class="form__input form__input_type_link"  id="link" type="url" required
+                        placeholder="Ссылка на картинку">
+                        <span class="link-error form__input-error"></span>
+                        
+                        <button type="submit" class="form__save" title="Сохранить">Сохранить</button>
+                    </form>
                 </div>
             </section>
         </main>

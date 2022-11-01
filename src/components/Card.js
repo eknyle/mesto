@@ -6,7 +6,8 @@ export class Card {
     isMyCard,
     likeCardEvent,
     dislikeCardEvent,
-    isLiked
+    isLiked,
+    openConfirmDeletePopup
   ) {
     this._id = data._id;
     this._name = data.name;
@@ -18,12 +19,13 @@ export class Card {
     this._isMyCard = isMyCard;
     this._likeCardEvent = likeCardEvent;
     this._dislikeCardEvent = dislikeCardEvent;
+    this._openConfirmDeletePopup = openConfirmDeletePopup;
   }
   _getTemplate() {
     const card = this._elementTemplate
       .querySelector(".element")
       .cloneNode(true);
-
+    card.id = this._id;
     return card;
   }
 
@@ -37,14 +39,16 @@ export class Card {
     if (this._isMyCard) {
       this._element
         .querySelector(".element__delete")
-        .addEventListener("click", this._deleteCard.bind(this));
+        .addEventListener("click", (evt) => {
+          this._openConfirmDeletePopup(this._id);
+        });
     }
   }
 
-  _deleteCard(evt) {
+  /* deleteCard(evt) {
     this._element.remove();
     this._element = null;
-  }
+  } */
   _likeCard(evt) {
     if (evt.target.classList.contains("element_liked")) {
       this._dislikeCardEvent(evt, this._id);

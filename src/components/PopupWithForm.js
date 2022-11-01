@@ -38,6 +38,7 @@ export default class PopupWithForm extends Popup {
     //обавлять обработчик сабмита формы
     this._element.addEventListener("submit", (evt) => {
       evt.preventDefault();
+
       const fields = this._getInputValues();
 
       this._submitEventHandler(evt, fields);
