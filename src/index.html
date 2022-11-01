@@ -23,7 +23,7 @@
                 <div class="profile__info">
                     <div class="profile__avatar-container">
                        
-                        <img src="<%=require('./images/avatar.jpg')%>"  alt="Фотография профиля" class="profile__avatar">
+                        <img src=""  alt="Фотография профиля" class="profile__avatar">
                     </div>
                     
                     <div class="profile__edit">
@@ -103,9 +103,9 @@
                     <h2 class="popup__avatar-title">Обновить аватар</h2>
                     <form class="form form_type_avatar" name="avatar-info" id="avatar-info"
                         aria-label="Обновить аватар">
-                        <input class="form__input form__input_type_link" type="url" required
+                        <input class="form__input form__input_type_link" id="avatarLink" type="url" required
                         placeholder="Ссылка на картинку">
-                        <span class="link-error form__input-error"></span>
+                        <span class="avatarLink-error form__input-error"></span>
                         
                         <button type="submit" class="form__save" title="Сохранить">Сохранить</button>
                     </form>

@@ -163,7 +163,7 @@ const saveProfileFormEvent = (evt, fieldsValues) => {
 };
 //работа с попапами
 const avatarValidation = new FormValidator(fields.validationAvatar);
-avatarValidation.enableValidation();
+
 const popupAvatar = new PopupWithForm(
   fields.popupAvatar,
   fields.avatarForm,
@@ -174,7 +174,9 @@ const popupAvatar = new PopupWithForm(
   avatarValidation,
   fields.avatarSaveButton
 );
+avatarValidation.enableValidation();
 popupAvatar.setEventListeners();
+
 fields.popupAvatarContainer.addEventListener("click", (evt) => {
   popupAvatar.open();
 });
