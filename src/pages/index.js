@@ -236,6 +236,15 @@ fields.popupAddPhotoAddButton.addEventListener("click", (event) => {
 });
 
 function setInitialCards(array) {
+  array.sort((a, b) => {
+    if (a.createdAt <= b.createdAt) {
+      return -1;
+    }
+    if (a.createdAt > b.createdAt) {
+      return 1;
+    }
+    return 0;
+  });
   const section = new Section(
     {
       items: array,
