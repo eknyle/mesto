@@ -1,15 +1,14 @@
 export default class Section {
-  constructor({ items, renderer }, container) {
+  constructor({ renderer }, container) {
     //Свойство items — это массив данных, которые нужно добавить на страницу при инициализации класса.
     // Свойство renderer — это функция, которая отвечает за создание и отрисовку данных на странице.
-    this._items = items;
     this._renderer = renderer;
-    this._elementsContainer = container; //селектор контейнера, в который нужно добавлять созданные элементы
+    this._elementsContainer = document.querySelector(container); //селектор контейнера, в который нужно добавлять созданные элементы
   }
-  generateItems() {
+  generateItems(items) {
     //отвечает за отрисовку всех элементов. Отрисовка каждого отдельного элемента должна осуществляться функцией renderer
-    for (let i = 0; i < this._items.length; i++) {
-      const card = this._renderer(this._items[i]);
+    for (let i = 0; i < items.length; i++) {
+      const card = this._renderer(items[i]);
       this.addItem(card);
     }
   }

@@ -1,36 +1,9 @@
-/* export const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-]; */
-
 export const photoViewPopupSelector = ".popup_type_view";
-export const popupConfirm = document.querySelector(".popup_type_delete-card");
+export const popupConfirm = ".popup_type_delete-card"; //document.querySelector(".popup_type_delete-card");
 export const popupConfirmCloseButton = document.querySelector(".popup__close");
 export const popupConfirmSaveButton = document.querySelector(".popup__save");
 
-export const popupAvatar = document.querySelector(".popup_type_avatar");
+export const popupAvatar = ".popup_type_avatar"; //document.querySelector(".popup_type_avatar");
 export const avatarForm = document.querySelector(".form_type_avatar"); //
 export const avatarLinkInput = avatarForm.querySelector(
   ".form__input_type_link"
@@ -45,16 +18,17 @@ export const popupAvatarContainer = document.querySelector(
 
 //находим поля имя и описание деятельности
 export const avatarField = document.querySelector(".profile__avatar");
-export const nameField = document.querySelector(".profile__title");
-export const jobField = document.querySelector(".profile__description");
-export const popupProfile = document.querySelector(".popup_type_profile");
-export const popupPhoto = document.querySelector(".popup_type_photo");
-export const popupView = document.querySelector(".popup_type_view");
+export const nameField = ".profile__title"; //document.querySelector(".profile__title");
+export const jobField = ".profile__description"; //document.querySelector(".profile__description");
+export const popupProfile = ".popup_type_profile"; //document.querySelector(".popup_type_profile");
+export const popupPhoto = ".popup_type_photo"; //document.querySelector(".popup_type_photo");
+export const popupView = ".popup_type_view"; //document.querySelector(".popup_type_view");
 export const popupPhotoImg = document.querySelector(".popup__image");
 export const popupPhotoTitle = document.querySelector(".popup__image-title");
 export const popupTitle = document.querySelector(".popup__container-title");
-export const elementTemplate =
-  document.querySelector(".element-template").content;
+
+export const elementTemplate = ".element-template";
+/*   document.querySelector(".element-template").content; */
 // Находим форму профиля
 export const profileForm = document.querySelector(".form_type_profile");
 // Находим поля формы редактирования профиля
@@ -93,7 +67,7 @@ export const popupAddPhotoAddButton = document.querySelector(
   ".profile__add-button"
 );
 //контейнер для карточек
-export const elementsContainer = document.querySelector(".elements");
+export const elementsContainer = ".elements"; //document.querySelector(".elements");
 
 export const photoViewPopupObj = {
   Image: popupPhotoImg,
@@ -101,6 +75,12 @@ export const photoViewPopupObj = {
   CloseButton: popupViewCloseButton,
 };
 
+export const validationObject = {
+  inactiveButtonClass: "form__save_disabled",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_active",
+};
+/* 
 export const validationProfile = {
   form: profileForm,
   inputList: [profileNameInput, profileDescriptionInput, profileSaveButton],
@@ -125,3 +105,4 @@ export const validationAvatar = {
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",
 };
+ */

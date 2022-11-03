@@ -1,65 +1,49 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor(
-    popup,
-    form,
-    submitEventHandler,
-    formFields,
-    getFieldsInfoFunction,
-    closeButton,
-    validateObj,
-    saveButton
-  ) {
-    super(popup, closeButton);
-
-    this._element = form;
+  constructor(popup, submitEventHandler) {
+    super(popup);
+    this._popup = popup;
     this._submitEventHandler = submitEventHandler;
-    this._fields = formFields;
-    this._getFieldsInfoFunction = getFieldsInfoFunction;
-    this._validateObj = validateObj;
-    this._saveButton = saveButton;
+    this.form = document.querySelector(this._popup).querySelector(".form");
+    this._submitButton = this.form.querySelector('button[type="submit"]');
+  }
+  renderSubmitButtonText(text) {
+    this._submitButton.textContent = text;
+  }
+  _getInputList() {
+    const elements = this.form.querySelectorAll(".form__input");
+    this.inputList = Array.prototype.slice.call(elements);
   }
   _getInputValues() {
-    //собирает данные всех полей формы
-    const fieldsValues = new Map();
-    this._fields.forEach((element) => {
-      fieldsValues.set(element.id, element.value);
+    this._formValues = {};
+    this.inputList.forEach((input) => {
+      this._formValues[input.id] = input.value;
     });
-    return fieldsValues;
+    return this._formValues;
   }
-  _setInputValues(data) {
-    this._fields.forEach((element) => {
-      element.value = data ? data.get(element.id) : "";
-      this._validateObj.hideInputError(this._element, element);
-    });
-  }
+
   setEventListeners() {
     //обавлять обработчик сабмита формы
-    this._element.addEventListener("submit", (evt) => {
+
+    this._getInputList();
+    super.setEventListeners();
+    this.form.addEventListener("submit", (evt) => {
       evt.preventDefault();
-
-      const fields = this._getInputValues();
-
-      this._submitEventHandler(evt, fields);
-      this.close();
+      this._submitEventHandler(
+        evt,
+        this._getInputValues(),
+        this.close.bind(this)
+      );
     });
   }
   close() {
     // при закрытии попапа форма должна ещё и сбрасываться
     //проходим по массиву элементов, сбрасываем все данные полей
-    this._element.reset();
+    this.form.reset();
     super.close();
   }
   open() {
-    //проходим по массиву элементов, сбрасываем все данные полей
-
-    const data = this._getFieldsInfoFunction
-      ? this._getFieldsInfoFunction()
-      : null;
-
-    this._setInputValues(data);
-    this._validateObj.toggleButtonState(this._fields, this._saveButton);
     super.open();
   }
 }

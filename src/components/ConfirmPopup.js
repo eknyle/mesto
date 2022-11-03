@@ -1,19 +1,22 @@
 import Popup from "./Popup.js";
 export default class ConfirmPopup extends Popup {
-  constructor(popup, CloseButton, SaveButton, deleteCardEvent) {
-    super(popup, CloseButton);
-    this._saveButton = SaveButton;
+  constructor(popup, deleteCardEvent) {
+    super(popup);
     this._deleteCardEvent = deleteCardEvent;
+    this._saveButton = document.querySelector(".popup__save");
   }
 
   setEventListeners() {
+    super.setEventListeners();
     this._saveButton.addEventListener("click", (evt) => {
-      this._deleteCardEvent(evt, this._cardId);
+      this._deleteCardEvent(evt, this._cardId, this._deleteCardCallback);
       super.close();
     });
   }
-  open(cardId) {
+
+  open(cardId, deleteCard) {
     this._cardId = cardId;
+    this._deleteCardCallback = deleteCard;
     super.open();
   }
 }

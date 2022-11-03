@@ -1,15 +1,19 @@
 import Popup from "./Popup.js";
 export default class PopupWithImage extends Popup {
-  constructor(popup, CloseButton) {
-    super(popup, CloseButton);
+  constructor(popup) {
+    super(popup);
+    this._image = document.querySelector(".popup__image");
+    this._title = document.querySelector(".popup__image-title");
   }
-  addEventListeners() {}
-  open(target, popupPhotoImg, popupPhotoTitle) {
+  setEventListeners() {
+    super.setEventListeners();
+  }
+  open(popupPhotoImg, popupPhotoTitle) {
     //нужно вставлять в попап картинку с src изображения и подписью к картинке
 
-    popupPhotoImg.setAttribute("src", target.getAttribute("src"));
-    popupPhotoImg.setAttribute("alt", target.getAttribute("alt"));
-    popupPhotoTitle.textContent = target.getAttribute("alt");
+    this._image.setAttribute("src", popupPhotoImg);
+    this._image.setAttribute("alt", popupPhotoTitle);
+    this._title.textContent = popupPhotoTitle;
 
     super.open();
   }

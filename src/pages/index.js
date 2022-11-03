@@ -1,4 +1,4 @@
-import * as fields from "../components/Data.js";
+import * as fields from "../components/data.js";
 import { Card } from "../components/Card.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PicturePopup.js";
@@ -12,72 +12,73 @@ import "./index.css";
 
 //вспомогательные функции
 let currentUserId = "";
-let currentUserAvatar = "";
+
 function setUser(data) {
   currentUserId = data._id;
-  currentUserAvatar = data.avatar;
 }
-function getCurrentUserAvatar() {
-  return new Map([[fields.avatarLinkInput.id, currentUserAvatar]]);
-}
+
 function isMyCardFunction(ownerId) {
   return currentUserId === ownerId ? true : false;
 }
-function renderLoading(isLoading, button) {
+function renderLoading(isLoading, text, changeTextMethod) {
   if (isLoading) {
-    button.textContent = "Сохранение...";
+    changeTextMethod(text);
   } else {
-    button.textContent = "Сохранить";
+    changeTextMethod(text);
   }
 }
-function updateLikeCount(data, element) {
-  element.textContent = data.likes.length;
-}
+
 //работа с данными пользователя
 const userInfo = new UserInfo(
-  fields.profileNameInput,
-  fields.profileDescriptionInput,
   fields.nameField,
   fields.jobField,
   fields.avatarField
 );
 //работа с API
-const api = new Api();
-api
-  .getUserInfo()
-  .then((result) => {
-    setUser(result);
-    userInfo.setUserInfoFromServer(result);
+const headers = new Headers({
+  "Content-Type": "application/json",
+  authorization: "c37f9a76-7d14-4e84-b759-844312e2f497",
+});
+const baseUrlApi = "https://mesto.nomoreparties.co/v1/cohort-52/cards";
+const api = new Api(headers, baseUrlApi);
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userInfoResult, initialCardsResult]) => {
+    setUser(userInfoResult);
+    userInfo.setUserInfoFromServer(userInfoResult);
+    setInitialCards(initialCardsResult);
   })
   .catch((err) => {
     console.log(err); // выведем ошибку в консоль
   });
-api
-  .getInitialCards()
-  .then((result) => {
-    setInitialCards(result);
-  })
-  .catch((err) => {
-    console.log(err); // выведем ошибку в консоль
-  });
-const saveAvatarFormEvent = (evt, fieldsValues) => {
+
+const saveAvatarFormEvent = (evt, fieldsValues, closeEventHandler) => {
   evt.preventDefault();
-  renderLoading(true, evt.submitter);
+
+  renderLoading(
+    true,
+    "Сохранение...",
+    popupAvatar.renderSubmitButtonText.bind(popupAvatar)
+  );
 
   api
-    .updateAvatar(fieldsValues.get(fields.avatarLinkInput.id))
+    .updateAvatar(fieldsValues[fields.avatarLinkInput.id])
     .then((data) => {
       userInfo.setUserInfoFromServer(data);
-      setUser(data);
+      closeEventHandler();
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
     })
     .finally(() => {
-      renderLoading(false, evt.submitter);
+      renderLoading(
+        false,
+        "Сохранить",
+        popupAvatar.renderSubmitButtonText.bind(popupAvatar)
+      );
     });
 };
-const likeCardEvent = (evt, cardId) => {
+const likeCardEvent = (evt, cardId, updateLikesNumber) => {
   evt.preventDefault();
 
   api
@@ -85,17 +86,13 @@ const likeCardEvent = (evt, cardId) => {
     .then((data) => {
       //обновить карточку после лайка
 
-      evt.target.classList.toggle("element_liked");
-      const element = evt.target.parentNode.querySelector(
-        ".element__like-number"
-      );
-      updateLikeCount(data, element);
+      updateLikesNumber(data);
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
     });
 };
-const dislikeCardEvent = (evt, cardId) => {
+const dislikeCardEvent = (evt, cardId, updateLikesNumber) => {
   evt.preventDefault();
 
   api
@@ -103,96 +100,108 @@ const dislikeCardEvent = (evt, cardId) => {
     .then((data) => {
       //обновить карточку после лайка
 
-      const element = evt.target.parentNode.querySelector(
-        ".element__like-number"
-      );
-      updateLikeCount(data, element);
-      evt.target.classList.toggle("element_liked");
+      updateLikesNumber(data);
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
     });
 };
-const deleteCardEvent = (evt, cardId) => {
+const deleteCardEvent = (evt, cardId, deleteCardEvent) => {
   evt.preventDefault();
 
   api
     .deleteCard(cardId)
     .then((data) => {
-      document.getElementById(`${cardId}`).remove();
+      deleteCardEvent();
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
     });
 };
 //сохранить данные формы добавления фото
-const savePhotoFormEvent = (evt, fieldsValues) => {
+const savePhotoFormEvent = (evt, fieldsValues, closeEventHandler) => {
   evt.preventDefault();
+  renderLoading(
+    true,
+    "Сохранение...",
+    photoFormPopup.renderSubmitButtonText.bind(photoFormPopup)
+  );
   const item = {
-    name: fieldsValues.get(fields.photoTitleInput.id),
-    link: fieldsValues.get(fields.photoLinkInput.id),
+    name: fieldsValues[fields.photoTitleInput.id],
+    link: fieldsValues[fields.photoLinkInput.id],
   };
   api
     .addNewCard(item.name, item.link)
     .then((data) => {
-      newItemSection.addItem(createCard(data, false));
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    });
-};
-
-//сохранить данные формы редактироивания профиля
-const saveProfileFormEvent = (evt, fieldsValues) => {
-  evt.preventDefault();
-  renderLoading(true, evt.submitter);
-  api
-    .updateUserInfo(
-      fieldsValues.get(fields.profileNameInput.id),
-      fieldsValues.get(fields.profileDescriptionInput.id)
-    )
-    .then((data) => {
-      userInfo.setUserInfo(fieldsValues);
+      section.addItem(createCard(data, false));
+      closeEventHandler();
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
     })
     .finally(() => {
-      renderLoading(false, evt.submitter);
+      renderLoading(
+        false,
+        "Создать",
+        photoFormPopup.renderSubmitButtonText.bind(photoFormPopup)
+      );
+    });
+};
+
+//сохранить данные формы редактироивания профиля
+const saveProfileFormEvent = (evt, fieldsValues, closeEventHandler) => {
+  evt.preventDefault();
+  renderLoading(
+    true,
+    "Сохранение...",
+    userFormPopup.renderSubmitButtonText.bind(userFormPopup)
+  );
+  api
+    .updateUserInfo(
+      fieldsValues[fields.profileNameInput.id],
+      fieldsValues[fields.profileDescriptionInput.id]
+    )
+    .then((data) => {
+      userInfo.setUserInfoFromServer(data);
+      closeEventHandler();
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    })
+    .finally(() => {
+      renderLoading(
+        false,
+        "Сохранить",
+        userFormPopup.renderSubmitButtonText.bind(userFormPopup)
+      );
     });
 };
 //работа с попапами
-const avatarValidation = new FormValidator(fields.validationAvatar);
-
-const popupAvatar = new PopupWithForm(
-  fields.popupAvatar,
+const avatarValidation = new FormValidator(
   fields.avatarForm,
-  saveAvatarFormEvent,
-  [fields.avatarLinkInput],
-  getCurrentUserAvatar,
-  fields.popupAvatarCloseButton,
-  avatarValidation,
-  fields.avatarSaveButton
+  fields.validationObject
 );
+const profileValidator = new FormValidator(
+  fields.profileForm,
+  fields.validationObject
+);
+const photoAddFormValidator = new FormValidator(
+  fields.photoAddForm,
+  fields.validationObject
+);
+
+const popupAvatar = new PopupWithForm(fields.popupAvatar, saveAvatarFormEvent);
 avatarValidation.enableValidation();
 popupAvatar.setEventListeners();
 
 fields.popupAvatarContainer.addEventListener("click", (evt) => {
+  avatarValidation.toggleButtonState(popupAvatar.inputList);
   popupAvatar.open();
 });
 
-const profileValidator = new FormValidator(fields.validationProfile);
-const photoAddFormValidator = new FormValidator(fields.validationPhoto);
-
 const userFormPopup = new PopupWithForm(
   fields.popupProfile,
-  fields.profileForm,
-  saveProfileFormEvent,
-  [fields.profileNameInput, fields.profileDescriptionInput],
-  userInfo.getUserInfo.bind(userInfo),
-  fields.popupProfileCloseButton,
-  profileValidator,
-  fields.profileSaveButton
+  saveProfileFormEvent
 );
 userFormPopup.setEventListeners();
 profileValidator.enableValidation();
@@ -201,42 +210,56 @@ const popupWithImage = new PopupWithImage(
   fields.popupView,
   fields.popupViewCloseButton
 );
-popupWithImage.addEventListeners();
+popupWithImage.setEventListeners();
 
-function openViewPopup(evt) {
-  popupWithImage.open(evt.target, fields.popupPhotoImg, fields.popupPhotoTitle);
+function openViewPopup(imageLink, imageTitle) {
+  popupWithImage.open(imageLink, imageTitle);
 }
-const confirmPopup = new ConfirmPopup(
-  fields.popupConfirm,
-  fields.popupConfirmCloseButton,
-  fields.popupConfirmSaveButton,
-  deleteCardEvent
-);
+const confirmPopup = new ConfirmPopup(fields.popupConfirm, deleteCardEvent);
 confirmPopup.setEventListeners();
-function openConfirmDeletePopup(cardid) {
-  confirmPopup.open(cardid);
+function openConfirmDeletePopup(cardid, deleteCard) {
+  confirmPopup.open(cardid, deleteCard);
 }
 const photoFormPopup = new PopupWithForm(
   fields.popupPhoto,
-  fields.photoAddForm,
   savePhotoFormEvent,
-  [fields.photoTitleInput, fields.photoLinkInput],
   null,
-  fields.popupAddPhotoCloseButton,
-  photoAddFormValidator,
-  fields.popupAddPhotoSaveButton
+  photoAddFormValidator
 );
 photoFormPopup.setEventListeners();
 photoAddFormValidator.enableValidation();
 
-fields.popupProfileOpenButton.addEventListener("click", (event) => {
+fields.popupProfileOpenButton.addEventListener("click", () => {
+  const data = userInfo.getUserInfo();
+  userFormPopup.inputList.forEach((element) => {
+    element.value = data[element.id];
+    profileValidator.hideInputError(element);
+  });
+
+  profileValidator.toggleButtonState(userFormPopup.inputList);
+
   userFormPopup.open();
 });
 
 fields.popupAddPhotoAddButton.addEventListener("click", (event) => {
+  photoAddFormValidator.toggleButtonState(photoFormPopup.inputList);
+
   photoFormPopup.open();
 });
 
+const section = new Section(
+  {
+    renderer: (card) => {
+      const isLiked =
+        card.likes.findIndex((el) => el._id === currentUserId) >= 0
+          ? true
+          : false;
+
+      return createCard(card, isLiked);
+    },
+  },
+  fields.elementsContainer
+);
 function setInitialCards(array) {
   array.sort((a, b) => {
     if (a.createdAt <= b.createdAt) {
@@ -247,21 +270,8 @@ function setInitialCards(array) {
     }
     return 0;
   });
-  const section = new Section(
-    {
-      items: array,
-      renderer: (card) => {
-        const isLiked =
-          card.likes.findIndex((el) => el._id === currentUserId) >= 0
-            ? true
-            : false;
 
-        return createCard(card, isLiked);
-      },
-    },
-    fields.elementsContainer
-  );
-  section.generateItems();
+  section.generateItems(array);
 }
 
 function createCard(item, isLiked) {
@@ -277,7 +287,3 @@ function createCard(item, isLiked) {
   );
   return card.generateCard();
 }
-const newItemSection = new Section(
-  { items: null, renderer: null },
-  fields.elementsContainer
-);

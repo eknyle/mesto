@@ -9,7 +9,7 @@
     cursor: pointer;
 }
 .profile__avatar-container:hover{
-    z-index: 50;
+    z-index: 10;
 }
 @media screen and (min-width:768px) {
     .profile__avatar-container {
