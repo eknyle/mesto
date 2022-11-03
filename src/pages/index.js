@@ -231,6 +231,7 @@ photoAddFormValidator.enableValidation();
 
 fields.popupProfileOpenButton.addEventListener("click", () => {
   const data = userInfo.getUserInfo();
+
   userFormPopup.inputList.forEach((element) => {
     element.value = data[element.id];
     profileValidator.hideInputError(element);

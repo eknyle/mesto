@@ -7,9 +7,16 @@ export default class UserInfo {
   getUserInfo() {
     //возвращает объект с данными пользователя.
     const info = {};
-    info[this._userNameField.id] = this._userNameField.textContent;
-    info[this._userDescriptionField.id] =
-      this._userDescriptionField.textContent;
+    info[
+      this._userNameField.id.slice(0, this._userNameField.id.indexOf("-text"))
+    ] = this._userNameField.textContent;
+    info[
+      this._userDescriptionField.id.slice(
+        0,
+        this._userDescriptionField.id.indexOf("-text")
+      )
+    ] = this._userDescriptionField.textContent;
+
     return info;
   }
   /*   setUserInfo(data) {
