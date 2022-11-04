@@ -2,7 +2,7 @@ export default class UserInfo {
   constructor(userNameField, userDescriptionField, userAvatar) {
     this._userNameField = document.querySelector(userNameField);
     this._userDescriptionField = document.querySelector(userDescriptionField);
-    this._userAvatar = userAvatar;
+    this._userAvatar = document.querySelector(userAvatar);
   }
   getUserInfo() {
     //возвращает объект с данными пользователя.

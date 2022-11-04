@@ -39,7 +39,7 @@ const headers = new Headers({
   "Content-Type": "application/json",
   authorization: "c37f9a76-7d14-4e84-b759-844312e2f497",
 });
-const baseUrlApi = "https://mesto.nomoreparties.co/v1/cohort-52/cards";
+const baseUrlApi = "https://mesto.nomoreparties.co/v1/cohort-52";
 const api = new Api(headers, baseUrlApi);
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -52,9 +52,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     console.log(err); // выведем ошибку в консоль
   });
 
-const saveAvatarFormEvent = (evt, fieldsValues, closeEventHandler) => {
-  evt.preventDefault();
-
+const saveAvatarFormEvent = (fieldsValues, closeEventHandler) => {
   renderLoading(
     true,
     "Сохранение...",
@@ -106,21 +104,21 @@ const dislikeCardEvent = (evt, cardId, updateLikesNumber) => {
       console.log(err); // выведем ошибку в консоль
     });
 };
-const deleteCardEvent = (evt, cardId, deleteCardEvent) => {
+const deleteCardEvent = (evt, cardId, deleteCardEvent, closeEventHandler) => {
   evt.preventDefault();
 
   api
     .deleteCard(cardId)
     .then((data) => {
       deleteCardEvent();
+      closeEventHandler();
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
     });
 };
 //сохранить данные формы добавления фото
-const savePhotoFormEvent = (evt, fieldsValues, closeEventHandler) => {
-  evt.preventDefault();
+const savePhotoFormEvent = (fieldsValues, closeEventHandler) => {
   renderLoading(
     true,
     "Сохранение...",
@@ -149,8 +147,7 @@ const savePhotoFormEvent = (evt, fieldsValues, closeEventHandler) => {
 };
 
 //сохранить данные формы редактироивания профиля
-const saveProfileFormEvent = (evt, fieldsValues, closeEventHandler) => {
-  evt.preventDefault();
+const saveProfileFormEvent = (fieldsValues, closeEventHandler) => {
   renderLoading(
     true,
     "Сохранение...",
@@ -195,7 +192,7 @@ avatarValidation.enableValidation();
 popupAvatar.setEventListeners();
 
 fields.popupAvatarContainer.addEventListener("click", (evt) => {
-  avatarValidation.toggleButtonState(popupAvatar.inputList);
+  avatarValidation.toggleButtonState();
   popupAvatar.open();
 });
 
@@ -237,13 +234,13 @@ fields.popupProfileOpenButton.addEventListener("click", () => {
     profileValidator.hideInputError(element);
   });
 
-  profileValidator.toggleButtonState(userFormPopup.inputList);
+  profileValidator.toggleButtonState();
 
   userFormPopup.open();
 });
 
 fields.popupAddPhotoAddButton.addEventListener("click", (event) => {
-  photoAddFormValidator.toggleButtonState(photoFormPopup.inputList);
+  photoAddFormValidator.toggleButtonState();
 
   photoFormPopup.open();
 });

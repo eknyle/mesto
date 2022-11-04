@@ -17,7 +17,7 @@ export const popupAvatarContainer = document.querySelector(
 );
 
 //находим поля имя и описание деятельности
-export const avatarField = document.querySelector(".profile__avatar");
+export const avatarField = ".profile__avatar"; //document.querySelector(".profile__avatar");
 export const nameField = ".profile__title"; //document.querySelector(".profile__title");
 export const jobField = ".profile__description"; //document.querySelector(".profile__description");
 export const popupProfile = ".popup_type_profile"; //document.querySelector(".popup_type_profile");
@@ -79,6 +79,8 @@ export const validationObject = {
   inactiveButtonClass: "form__save_disabled",
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",
+  inputSelector: ".form__input",
+  submitButtonSelector: 'button[type="submit"]',
 };
 /* 
 export const validationProfile = {

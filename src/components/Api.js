@@ -2,6 +2,7 @@ export default class Api {
   constructor(headers, url) {
     this._headers = headers;
     this._baseUrl = url;
+    this._getUserInfoUrl = this._baseUrl.replace("mesto.", "");
   }
   _getResponseData(res) {
     if (res.ok) {
@@ -11,14 +12,14 @@ export default class Api {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
   getInitialCards() {
-    return fetch(this._baseUrl, {
+    return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     }).then((res) => {
       return this._getResponseData(res);
     });
   }
   addNewCard(name, link) {
-    return fetch(this._baseUrl, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
@@ -30,7 +31,7 @@ export default class Api {
     });
   }
   deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => {
@@ -39,7 +40,7 @@ export default class Api {
   }
 
   likeCard(cardId) {
-    return fetch(`${this._baseUrl}/${cardId}/likes`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then((res) => {
@@ -47,7 +48,7 @@ export default class Api {
     });
   }
   dislikeCard(cardId) {
-    return fetch(`${this._baseUrl}/${cardId}/likes`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => {
@@ -56,28 +57,25 @@ export default class Api {
   }
 
   getUserInfo() {
-    return fetch("https://nomoreparties.co/v1/cohort-52/users/me", {
+    return fetch(`${this._getUserInfoUrl}/users/me`, {
       headers: this._headers,
     }).then((res) => {
       return this._getResponseData(res);
     });
   }
   updateAvatar(url) {
-    return fetch(
-      "https://mesto.nomoreparties.co/v1/cohort-52/users/me/avatar",
-      {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({
-          avatar: url,
-        }),
-      }
-    ).then((res) => {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: url,
+      }),
+    }).then((res) => {
       return this._getResponseData(res);
     });
   }
   updateUserInfo(name, about) {
-    return fetch("https://mesto.nomoreparties.co/v1/cohort-52/users/me", {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
